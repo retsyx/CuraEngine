@@ -143,9 +143,15 @@ void FffGcodeWriter::writeGCode(SliceDataStorage& storage, TimeKeeper& time_keep
     //Store the object height for when we are printing multiple objects, as we need to clear every one of them when moving to the next position.
     max_object_height = std::max(max_object_height, storage.model_max.z);
 
-
+    // retract after finishing each meshgroup
     constexpr bool force = true;
-    gcode.writeRetraction(storage.retraction_config_per_extruder[gcode.getExtruderNr()], force); // retract after finishing each meshgroup
+    double distance = storage.extruder_switch_retraction_config_per_extruder[gcode.getExtruderNr()].distance;
+    if (distance > 0) {
+        constexpr bool extruder_switch = true;
+        gcode.writeRetraction(storage.extruder_switch_retraction_config_per_extruder[gcode.getExtruderNr()], force, extruder_switch);
+    } else {
+        gcode.writeRetraction(storage.retraction_config_per_extruder[gcode.getExtruderNr()], force);
+    }
 }
 
 unsigned int FffGcodeWriter::findSpiralizedLayerSeamVertexIndex(const SliceDataStorage& storage, const SliceMeshStorage& mesh, const int layer_nr, const int last_layer_nr)
@@ -637,15 +643,6 @@ void FffGcodeWriter::processRaft(const SliceDataStorage& storage)
         infill_comp.generate(raft_polygons, raftLines);
         gcode_layer.addLinesByOptimizer(raftLines, gcode_layer.configs_storage.raft_base_config, SpaceFillType::Lines);
 
-        // When we use raft, we need to make sure that all used extruders for this print will get primed on the first raft layer,
-        // and then switch back to the original extruder.
-        std::vector<size_t> extruder_order = getUsedExtrudersOnLayerExcludingStartingExtruder(storage, extruder_nr, layer_nr);
-        for (const size_t to_be_primed_extruder_nr : extruder_order)
-        {
-            setExtruder_addPrime(storage, gcode_layer, to_be_primed_extruder_nr);
-            current_extruder_nr = to_be_primed_extruder_nr;
-        }
-
         layer_plan_buffer.handle(gcode_layer, gcode);
         last_planned_position = gcode_layer.getLastPlannedPositionOrStartingPosition();
     }
@@ -897,9 +894,13 @@ LayerPlan& FffGcodeWriter::processLayer(const SliceDataStorage& storage, LayerIn
     }
 
     if (include_helper_parts)
-    { // add prime tower if it hasn't already been added
-        int prev_extruder = gcode_layer.getExtruder(); // most likely the same extruder as we are extruding with now
-        addPrimeTower(storage, gcode_layer, prev_extruder);
+    {
+        const bool has_raft = scene.current_mesh_group->settings.get<EPlatformAdhesion>("adhesion_type") == EPlatformAdhesion::RAFT;
+        if (!has_raft || layer_nr > -Raft::getFillerLayerCount())
+        { // add prime tower if it hasn't already been added
+            int prev_extruder = gcode_layer.getExtruder(); // most likely the same extruder as we are extruding with now
+            addPrimeTower(storage, gcode_layer, prev_extruder);
+        }
     }
 
     if (!disable_path_optimisation)
@@ -1069,12 +1070,6 @@ std::vector<size_t> FffGcodeWriter::getUsedExtrudersOnLayerExcludingStartingExtr
     std::vector<size_t> ret;
     ret.push_back(start_extruder);
     std::vector<bool> extruder_is_used_on_this_layer = storage.getExtrudersUsed(layer_nr);
-
-    //The outermost prime tower extruder is always used if there is a prime tower.
-    if (mesh_group_settings.get<bool>("prime_tower_enable") && layer_nr <= storage.max_print_height_second_to_last_extruder)
-    {
-        extruder_is_used_on_this_layer[storage.primeTower.extruder_order[0]] = true;
-    }
 
     // check if we are on the first layer
     if ((mesh_group_settings.get<EPlatformAdhesion>("adhesion_type") == EPlatformAdhesion::RAFT && layer_nr == -static_cast<LayerIndex>(Raft::getTotalExtraLayers()))
@@ -2577,42 +2572,33 @@ AngleDegrees FffGcodeWriter::supportInterfaceFillAngle(const SliceDataStorage& s
 
 void FffGcodeWriter::setExtruder_addPrime(const SliceDataStorage& storage, LayerPlan& gcode_layer, const size_t extruder_nr) const
 {
-    const size_t outermost_prime_tower_extruder = storage.primeTower.extruder_order[0];
-
     const size_t previous_extruder = gcode_layer.getExtruder();
-    if (previous_extruder == extruder_nr && !(extruder_nr == outermost_prime_tower_extruder
-            && gcode_layer.getLayerNr() >= -static_cast<LayerIndex>(Raft::getFillerLayerCount()))) //No unnecessary switches, unless switching to extruder for the outer shell of the prime tower.
+    const bool extruder_changed = gcode_layer.setExtruder(extruder_nr);
+    if (!extruder_changed)
     {
         return;
     }
-    const bool extruder_changed = gcode_layer.setExtruder(extruder_nr);
-
-    if (extruder_changed)
+    if (extruder_prime_layer_nr[extruder_nr] == gcode_layer.getLayerNr())
     {
-        if (extruder_prime_layer_nr[extruder_nr] == gcode_layer.getLayerNr())
-        {
-            const ExtruderTrain& train = Application::getInstance().current_slice->scene.extruders[extruder_nr];
+        const ExtruderTrain& train = Application::getInstance().current_slice->scene.extruders[extruder_nr];
 
-            // We always prime an extruder, but whether it will be a prime blob/poop depends on if prime blob is enabled.
-            // This is decided in GCodeExport::writePrimeTrain().
-            if (train.settings.get<bool>("prime_blob_enable")) // Don't travel to the prime-blob position if not enabled though.
-            {
-                bool prime_pos_is_abs = train.settings.get<bool>("extruder_prime_pos_abs");
-                Point prime_pos = Point(train.settings.get<coord_t>("extruder_prime_pos_x"), train.settings.get<coord_t>("extruder_prime_pos_y"));
-                gcode_layer.addTravel(prime_pos_is_abs ? prime_pos : gcode_layer.getLastPlannedPositionOrStartingPosition() + prime_pos);
-                gcode_layer.planPrime();
-            }
-        }
-
-        if (gcode_layer.getLayerNr() == 0 && !gcode_layer.getSkirtBrimIsPlanned(extruder_nr))
+        // We always prime an extruder, but whether it will be a prime blob/poop depends on if prime blob is enabled.
+        // This is decided in GCodeExport::writePrimeTrain().
+        if (train.settings.get<bool>("prime_blob_enable")) // Don't travel to the prime-blob position if not enabled though.
         {
-            processSkirtBrim(storage, gcode_layer, extruder_nr);
+            bool prime_pos_is_abs = train.settings.get<bool>("extruder_prime_pos_abs");
+            Point prime_pos = Point(train.settings.get<coord_t>("extruder_prime_pos_x"), train.settings.get<coord_t>("extruder_prime_pos_y"));
+            gcode_layer.addTravel(prime_pos_is_abs ? prime_pos : gcode_layer.getLastPlannedPositionOrStartingPosition() + prime_pos);
+            gcode_layer.planPrime();
         }
     }
 
-    // The first layer of the prime tower is printed with one material only, so do not prime another material on the
-    // first layer again.
-    if (((extruder_changed && gcode_layer.getLayerNr() > 0) || extruder_nr == outermost_prime_tower_extruder) && gcode_layer.getLayerNr() >= -static_cast<LayerIndex>(Raft::getFillerLayerCount())) //Always print a prime tower with outermost extruder.
+    if (gcode_layer.getLayerNr() == 0 && !gcode_layer.getSkirtBrimIsPlanned(extruder_nr))
+    {
+        processSkirtBrim(storage, gcode_layer, extruder_nr);
+    }
+
+    if (gcode_layer.getLayerNr() >= -static_cast<LayerIndex>(Raft::getFillerLayerCount()))
     {
         addPrimeTower(storage, gcode_layer, previous_extruder);
     }
@@ -2625,8 +2611,7 @@ void FffGcodeWriter::addPrimeTower(const SliceDataStorage& storage, LayerPlan& g
         return;
     }
 
-    const size_t outermost_prime_tower_extruder = storage.primeTower.extruder_order[0];
-    if (gcode_layer.getLayerNr() == 0 && outermost_prime_tower_extruder != gcode_layer.getExtruder())
+    if (gcode_layer.getLayerNr() < -static_cast<LayerIndex>(Raft::getFillerLayerCount()))
     {
         return;
     }

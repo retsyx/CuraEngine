@@ -88,6 +88,10 @@ void GCodeExport::preSetup(const size_t start_extruder)
 
         extruder_attr[extruder_nr].last_retraction_prime_speed = train.settings.get<Velocity>("retraction_prime_speed"); // the alternative would be switch_extruder_prime_speed, but dual extrusion might not even be configured...
         extruder_attr[extruder_nr].fan_number = train.settings.get<size_t>("machine_extruder_cooling_fan_number");
+
+        // If there is an extruder switch retraction distance, assume all extruders start fully retracted. It's
+        // physically impossible for all extruders to be primed on a single hot end machine.
+        extruder_attr[extruder_nr].retraction_e_amount_current = train.settings.get<double>("switch_extruder_retraction_amount");
     }
 
     machine_name = mesh_group->settings.get<std::string>("machine_name");
