@@ -1,3 +1,10 @@
+This Fork
+=========
+
+Presently forked off a development version of 4.2.
+
+This fork fixes some bugs to allow using CuraEngine with dual extruders and a single hotend with and without a raft. Especially, when using one extruder for raft and supports (for dissolvable raft and supports). The fixes are rather blunt and may break other functionality in CuraEngine, especially with more extruders. 
+
 CuraEngine
 ==========
 The CuraEngine is a C++ console application for 3D printing GCode generation. It has been made as a better and faster alternative to the old Skeinforge engine.
