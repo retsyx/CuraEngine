@@ -6,9 +6,9 @@
 
 #include "settings/Settings.h"
 
-namespace cura 
+namespace cura
 {
-    
+
 class ExtruderTrain
 {
 public:

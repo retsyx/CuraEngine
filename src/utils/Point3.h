@@ -99,7 +99,7 @@ public:
     {
         return sqrt(vSize2());
     }
-    
+
     double vSizeMM() const
     {
         double fx = INT2MM(x);

@@ -10,7 +10,7 @@
 #include "polygon.h"
 
 
-namespace cura 
+namespace cura
 {
 
 /*!
@@ -60,7 +60,7 @@ public:
     }
     /*!
      * Test whether two iterators refer to the same polygon in the same polygon list.
-     * 
+     *
      * \param other The PolygonsPointIndex to test for equality
      * \return Wether the right argument refers to the same polygon in the same ListPolygon as the left argument.
      */
@@ -80,30 +80,30 @@ public:
         return *this;
     }
     //! move the iterator forward (and wrap around at the end)
-    PolygonsPointIndex& operator++() 
-    { 
+    PolygonsPointIndex& operator++()
+    {
         point_idx = (point_idx + 1) % (*polygons)[poly_idx].size();
-        return *this; 
+        return *this;
     }
     //! move the iterator backward (and wrap around at the beginning)
-    PolygonsPointIndex& operator--() 
-    { 
+    PolygonsPointIndex& operator--()
+    {
         if (point_idx == 0)
         {
             point_idx = (*polygons)[poly_idx].size();
         }
         point_idx--;
-        return *this; 
+        return *this;
     }
     //! move the iterator forward (and wrap around at the end)
-    PolygonsPointIndex next() const 
+    PolygonsPointIndex next() const
     {
         PolygonsPointIndex ret(*this);
         ++ret;
         return ret;
     }
     //! move the iterator backward (and wrap around at the beginning)
-    PolygonsPointIndex prev() const 
+    PolygonsPointIndex prev() const
     {
         PolygonsPointIndex ret(*this);
         --ret;

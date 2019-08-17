@@ -15,7 +15,7 @@ namespace cura
         EXPECT_FALSE(empty_box.contains(Point(0, 0))) << "Empty box shouldn't contain anything.";
         EXPECT_FALSE(empty_box.contains(empty_box.getMiddle())) << "Empty box shouldn't contain anything, even it's own middle.";
         EXPECT_FALSE(empty_box.hit(empty_box)) << "Empty boxes shouldn't intersect.";
-        
+
         empty_box.include(Point(-10, -5));
         empty_box.include(Point(  5, 10));
 
@@ -116,7 +116,7 @@ namespace cura
         EXPECT_FALSE(box.contains(Point(1, 1))) << "The unexpanded (via include/point) box should not contain a point in the (future) expanded area.";
 
         box.include(Point(0, 0));
-        
+
         EXPECT_TRUE(box.contains(Point(1, 1))) << "The expanded (via include/point) box should contain a point in the expanded area.";
         EXPECT_FALSE(box.contains(Point(6, 9))) << "The unexpanded (via include/other) box should not contain a point in the (future) expanded area.";
 

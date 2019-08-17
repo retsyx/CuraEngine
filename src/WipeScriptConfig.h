@@ -6,7 +6,7 @@
 #include "settings/types/Duration.h"
 #include "settings/types/Velocity.h"
 
-namespace cura 
+namespace cura
 {
 
 struct WipeScriptConfig

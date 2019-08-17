@@ -91,7 +91,7 @@ void Scene::processMeshGroup(MeshGroup& mesh_group)
 
         Weaver weaver;
         weaver.weave(&mesh_group);
-        
+
         log("Starting Neith Gcode generation...\n");
         Wireframe2gcode gcoder(weaver, fff_processor->gcode_writer.gcode);
         gcoder.writeGCode();
@@ -105,7 +105,7 @@ void Scene::processMeshGroup(MeshGroup& mesh_group)
         {
             return;
         }
-        
+
         Progress::messageProgressStage(Progress::Stage::EXPORT, &fff_processor->time_keeper);
         fff_processor->gcode_writer.writeGCode(storage, fff_processor->time_keeper);
     }

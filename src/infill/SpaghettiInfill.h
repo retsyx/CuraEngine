@@ -16,16 +16,16 @@ class SliceMeshStorage;
 
 /*!
  * Spaghetti infill is a type of infill which fills every so many layers, but extrudes as much filament corresponding to the total unfilled volume under the filling area.
- * 
+ *
  * A filling layer is inserted when a a pillar of infill areas is becoming too high, or when the angle between the filling areas is too shallow.
- * 
+ *
  * The filling area might be smaller than the actual infill area, so that we fill the pillar from a smaller top area.
- * 
+ *
  * Infill pillars can join each other if they are connected on the top. The total volume will then be extruded from the top.
- * 
+ *
  * Where the model spits into two from bottom to top, one of the top pieces will be connected to the lower part as one big pillar, while a new pillar will be generated for the other top part.
  * Which part the base will be connected to is arbitrary.
- * 
+ *
  */
 class SpaghettiInfill
 {
@@ -39,7 +39,7 @@ protected:
     /*!
      * Generate spaghetti infill for the total volume of the mesh,
      * extrude all filament from the top of the print.
-     * 
+     *
      * \param mesh The mesh for which to generate spaghetti infill
      */
     static void generateTotalSpaghettiInfill(SliceMeshStorage& mesh);
@@ -56,7 +56,7 @@ protected:
 
         /*!
          * Basic constructor of a pillar from a single area, which is to be the top of the new pillar
-         * 
+         *
          * \param mesh The mesh that this infill belongs to.
          * \param _top_part The area which is the base and the top of the new pillar
          * \param layer_height The layer height of the layer which contains the \p _top_part
@@ -67,7 +67,7 @@ protected:
         /*!
          * Check whether the top of this pillar is connected (enough) to the given \p infill_part.
          * It is assumed the infill_part is on the layer directly above the top part of this pillar.
-         * 
+         *
          * \param infill_part The part to check for connectivity
          * \return Whether the infill part can be incorporated in this pillar
          */
@@ -76,9 +76,9 @@ protected:
         /*!
          * Register the volume of this infill pillar in the sliceDataStorage.
          * The filling area and the volume are saved in \ref SliceLayerPart::spaghetti_infill_volumes
-         * 
+         *
          * Note that the filling area is different from the infill area, because the spaghetti can curl toward the sides.
-         * 
+         *
          * \param filling_area_inset The inset from the boundary of the walls to get from the infill area to the filling area
          * \param line_width The line width used to generate an area just large enough for infill lines to be generated, when the infill area would otherwise be too small to get infill
          */
@@ -87,7 +87,7 @@ protected:
 
     /*!
      * Compute the area within which to generate the spaghetti infill.
-     * 
+     *
      * \param infill_area The area of normal infill
      * \param fill_area_inset The distance between the normal infill and the spaghetti infill area
      * \param line_width The line width of the infill lines

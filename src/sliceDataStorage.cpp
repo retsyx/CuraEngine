@@ -26,7 +26,7 @@ SupportStorage::SupportStorage()
 
 SupportStorage::~SupportStorage()
 {
-    supportLayers.clear(); 
+    supportLayers.clear();
     if (cross_fill_provider)
     {
         delete cross_fill_provider;
@@ -69,7 +69,7 @@ void SliceLayer::getOutlines(Polygons& result, bool external_polys_only) const
         {
             result.add(part.outline.outerPolygon());
         }
-        else 
+        else
         {
             result.add(part.print_outline);
         }
@@ -390,23 +390,23 @@ Polygons SliceDataStorage::getLayerOutlines(const LayerIndex layer_nr, const boo
             {
                 std::vector<PolygonsPart> parts = raftOutline.splitIntoParts();
                 Polygons result;
-                for (PolygonsPart& part : parts) 
+                for (PolygonsPart& part : parts)
                 {
                     result.add(part.outerPolygon());
                 }
                 return result;
             }
-            else 
+            else
             {
                 return raftOutline;
             }
         }
-        else 
+        else
         {
             return Polygons();
         }
     }
-    else 
+    else
     {
         Polygons total;
         coord_t maximum_resolution = std::numeric_limits<coord_t>::max();
@@ -432,7 +432,7 @@ Polygons SliceDataStorage::getLayerOutlines(const LayerIndex layer_nr, const boo
         if (include_support)
         {
             const SupportLayer& support_layer = support.supportLayers[std::max(LayerIndex(0), layer_nr)];
-            if (support.generated) 
+            if (support.generated)
             {
                 for (const SupportInfillPart& support_infill_part : support_layer.support_infill_parts)
                 {

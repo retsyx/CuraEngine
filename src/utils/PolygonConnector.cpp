@@ -5,7 +5,7 @@
 #include "linearAlg2D.h"
 #include "AABB.h"
 
-namespace cura 
+namespace cura
 {
 
 Polygons PolygonConnector::connect()
@@ -207,7 +207,7 @@ std::optional<PolygonConnector::PolygonConnection> PolygonConnector::getSecondCo
 
 
     const Point shift = turn90CCW(first.from.p() - first.to.p());
-    
+
     std::optional<PolygonConnection> best;
     coord_t best_total_distance2 = std::numeric_limits<coord_t>::max();
     for (unsigned int from_idx = 0; from_idx < 2; from_idx++)
@@ -241,7 +241,7 @@ std::optional<PolygonConnector::PolygonConnection> PolygonConnector::getSecondCo
                 best.emplace(from, to);
                 best_total_distance2 = total_distance2;
             }
-            
+
             if (to_opt == to_b)
             {
                 break;

@@ -132,7 +132,7 @@ namespace cura
     {
         static const std::vector<bool> should_be_leave({ true, true, false, false, false, true, true, false, false, false, true });
         // constexpr wont work here (yet) on Win.
-        
+
         MinimumSpanningTree& mst = *p_mst;
         const std::vector<Point> leaves = mst.leaves();
 

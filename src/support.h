@@ -19,7 +19,7 @@ public:
     /*!
      * \brief Move support mesh outlines from slicer data into the support
      * storage.
-     * 
+     *
      * \param[out] storage Where to store the support areas.
      * \param mesh_settings Where to get the settings from what kind of support
      * mesh it is.
@@ -116,11 +116,11 @@ private:
 
     /*!
      * \brief Combines the support infill of multiple layers.
-     * 
+     *
      * The support infill layers are combined while the thickness of each layer is
      * multiplied such that the infill should fill up again to the full height of
      * all combined layers.
-     * 
+     *
      * \param storage data storage containing the input layer outline data and containing the output support storage per layer
      */
     static void combineSupportInfillLayers(SliceDataStorage& storage);
@@ -149,7 +149,7 @@ private:
      * meshes with drop down and once for all support meshes without drop down.
      * The \p mesh_idx should then correspond to an empty \ref SliceMeshStorage
      * of one support mesh with the given value of support_mesh_drop_down.
-     * 
+     *
      * \param storage Data storage containing the input layer outline data.
      * \param infill_settings The settings which are based on the infill of the
      * support.
@@ -225,11 +225,11 @@ private:
     /*!
      * Move the support up from model (cut away polygons to ensure bottom z distance)
      * and apply stair step transformation.
-     * 
+     *
      * If the bottom stairs defined only by the step height are too wide,
      * the top half of the step will be as wide as the stair step width
      * and the bottom half will follow the model.
-     * 
+     *
      * \param storage Where to get model outlines from
      * \param[in,out] stair_removal The polygons to be removed for stair stepping on the current layer (input) and for the next layer (output). Only changed every [step_height] layers.
      * \param[in,out] support_areas The support areas before and after this function
@@ -247,26 +247,26 @@ private:
      * \param mesh Output mesh to store the resulting overhang points in.
      */
     static void detectOverhangPoints(const SliceDataStorage& storage, SliceMeshStorage& mesh);
-    
+
     /*!
      * \brief Compute the basic overhang and full overhang of a layer.
      *
      * The basic overhang consists of the parts of this layer which are too far
      * away from the layer below to be supported. The full overhang consists of
      * the basic overhang extended toward the border of the layer below.
-     * 
+     *
      *             layer 2
      * layer 1 ______________|
      * _______|         ^^^^^ basic overhang
      *         ^^^^^^^^^^^^^^ full overhang
-     * 
+     *
      * \param storage The slice data storage.
      * \param mesh The mesh for which to compute the basic overhangs.
      * \param layer_idx The layer for which to compute the overhang.
      * \return A pair of basic overhang and full overhang.
      */
     static std::pair<Polygons, Polygons> computeBasicAndFullOverhang(const SliceDataStorage& storage, const SliceMeshStorage& mesh, const unsigned int layer_idx);
-    
+
     /*!
      * \brief Adds tower pieces to the current support layer.
      *
@@ -289,7 +289,7 @@ private:
         LayerIndex layer_idx,
         size_t layer_count
     );
-    
+
     /*!
      * \brief Adds struts (towers against a wall) to the current layer.
      * \param settings The settings to use to create the wall struts.
@@ -301,10 +301,10 @@ private:
     /*!
      * Clean up the SupportInfillParts.
      * Remove parts which have nothing to be printed.
-     * 
+     *
      * Remove parts which are too small for the first wall.
      * For parts without walls: remove if combined into upper layers.
-     * 
+     *
      */
     static void cleanup(SliceDataStorage& storage);
 };

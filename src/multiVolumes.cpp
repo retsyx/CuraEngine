@@ -7,9 +7,9 @@
 #include "slicer.h"
 #include "settings/EnumSettings.h"
 
-namespace cura 
+namespace cura
 {
- 
+
 void carveMultipleVolumes(std::vector<Slicer*> &volumes)
 {
     //Go trough all the volumes, and remove the previous volume outlines from our own outline, so we never have overlapped areas.
@@ -17,7 +17,7 @@ void carveMultipleVolumes(std::vector<Slicer*> &volumes)
     for (unsigned int volume_1_idx = 1; volume_1_idx < volumes.size(); volume_1_idx++)
     {
         Slicer& volume_1 = *volumes[volume_1_idx];
-        if (volume_1.mesh->settings.get<bool>("infill_mesh") 
+        if (volume_1.mesh->settings.get<bool>("infill_mesh")
             || volume_1.mesh->settings.get<bool>("anti_overhang_mesh")
             || volume_1.mesh->settings.get<bool>("support_mesh")
             || volume_1.mesh->settings.get<ESurfaceMode>("magic_mesh_surface_mode") == ESurfaceMode::SURFACE
@@ -56,7 +56,7 @@ void carveMultipleVolumes(std::vector<Slicer*> &volumes)
         }
     }
 }
- 
+
 //Expand each layer a bit and then keep the extra overlapping parts that overlap with other volumes.
 //This generates some overlap in dual extrusion, for better bonding in touching parts.
 void generateMultipleVolumesOverlap(std::vector<Slicer*> &volumes)

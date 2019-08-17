@@ -19,7 +19,7 @@
 #define CIRCLE_RESOLUTION 32 //The number of vertices in each circle.
 
 
-namespace cura 
+namespace cura
 {
 
 PrimeTower::PrimeTower()
@@ -55,7 +55,7 @@ void PrimeTower::generateGroundpoly()
 
     const Settings& mesh_group_settings = Application::getInstance().current_slice->scene.current_mesh_group->settings;
     const coord_t tower_size = mesh_group_settings.get<coord_t>("prime_tower_size");
-    
+
     const Settings& brim_extruder_settings = mesh_group_settings.get<ExtruderTrain&>("adhesion_extruder_nr").settings;
     const bool has_raft = (mesh_group_settings.get<EPlatformAdhesion>("adhesion_type") == EPlatformAdhesion::RAFT);
     const bool has_prime_brim = mesh_group_settings.get<bool>("prime_tower_brim_enable");
@@ -65,7 +65,7 @@ void PrimeTower::generateGroundpoly()
         brim_extruder_settings.get<Ratio>("initial_layer_line_width_factor");
 
     PolygonRef p = outer_poly.newPoly();
-    int tower_distance = 0; 
+    int tower_distance = 0;
     const coord_t x = mesh_group_settings.get<coord_t>("prime_tower_position_x") - offset;
     const coord_t y = mesh_group_settings.get<coord_t>("prime_tower_position_y") - offset;
     const coord_t tower_radius = tower_size / 2;

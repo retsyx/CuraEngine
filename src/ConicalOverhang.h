@@ -19,7 +19,7 @@ class ConicalOverhang
 public:
     /*!
      * Change the slice data such that the model becomes more printable
-     * 
+     *
      * \param[in,out] slicer The slice data.
      * \param mesh The mesh to get the settings from.
      */

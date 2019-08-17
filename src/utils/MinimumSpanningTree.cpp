@@ -117,7 +117,7 @@ std::vector<Point> MinimumSpanningTree::leaves() const
 std::vector<Point> MinimumSpanningTree::vertices() const
 {
     std::vector<Point> result;
-    using MapValue = std::pair<Point, std::vector<Edge>>; 
+    using MapValue = std::pair<Point, std::vector<Edge>>;
     std::transform(adjacency_graph.begin(), adjacency_graph.end(), std::back_inserter(result),
                    [](const MapValue& node) { return node.first; });
     return result;

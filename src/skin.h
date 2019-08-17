@@ -7,7 +7,7 @@
 #include "settings/types/LayerIndex.h"
 #include "utils/Coord_t.h"
 
-namespace cura 
+namespace cura
 {
 
 class Polygons;
@@ -24,7 +24,7 @@ public:
 
     /*!
      * \brief Initialize the parameters for skin and infill area computation.
-     * 
+     *
      * \param layer_nr The index of the layer for which to generate the skins
      * and infill.
      * \param mesh The storage where the layer outline information (input) is
@@ -41,11 +41,11 @@ public:
 
     /*!
      * \brief Combines the infill of multiple layers for a specified mesh.
-     * 
+     *
      * The infill layers are combined while the thickness of each layer is
      * multiplied such that the infill should fill up again to the full height of
      * all combined layers.
-     * 
+     *
      * \param mesh The mesh to combine the infill layers of.
      */
     static void combineInfillLayers(SliceMeshStorage& mesh);
@@ -69,10 +69,10 @@ public:
 
     /*!
      * Limit the infill areas to places where they support internal overhangs.
-     * 
+     *
      * This function uses the part.infill_area and part.infill_area_own
      * and computes a new part.infill_area_own
-     * 
+     *
      * \param mesh The mesh for which to recalculate the infill areas
      */
     static void generateInfillSupport(SliceMeshStorage& mesh);
@@ -84,7 +84,7 @@ protected:
 
     /*!
      * Generate the skin areas (outlines) of one part in a layer
-     * 
+     *
      * \param part The part for which to generate skins.
      */
     void generateSkinAndInfillAreas(SliceLayerPart& part);
@@ -111,7 +111,7 @@ protected:
      * Apply skin expansion:
      * expand skins into infill area
      * where the skin is broad enough
-     * 
+     *
      * \param original_outline The outline within which skin and infill lie (inner bounds of innermost walls)
      * \param[in,out] upskin The top skin areas to grow
      * \param[in,out] downskin The bottom skin areas to grow
@@ -129,14 +129,14 @@ protected:
     /*!
      * Calculate the areas which are 'directly' under air,
      * remove them from the \ref SkinPart::inner_infill and save them in the \ref SkinPart::roofing_fill of the \p part
-     * 
+     *
      * \param[in,out] part Where to get the sSkinParts to get the outline info from and to store the roofing areas
      */
     void generateRoofing(SliceLayerPart& part);
 
     /*!
      * Generate the skin insets and the inner infill area
-     * 
+     *
      * \param part The part where the skin outline information (input) is stored and
      * where the skin insets (output) are stored.
      */
@@ -144,7 +144,7 @@ protected:
 
     /*!
      * Generate the skin insets of a skin part
-     * 
+     *
      * \param skin_part The part where the skin outline information (input) is stored and
      * where the skin insets (output) are stored.
      */
@@ -152,7 +152,7 @@ protected:
 
     /*!
      * Generate the inner_infill_area of a skin part
-     * 
+     *
      * \param skin_part The part where the skin outline information (input) is stored and
      * where the inner infill area (output) is stored.
      */
@@ -187,7 +187,7 @@ private:
 
     /*!
      * Helper function to get the walls of each part which might intersect with \p part_here
-     * 
+     *
      * \param part_here The part for which to check
      * \param layer2_nr The layer index from which to gather the outlines
      * \param wall_idx The 1-based wall index for the walls to grab. e.g. the outermost walls or the second walls. Zero means the outline.
@@ -197,10 +197,10 @@ private:
     /*!
      * Get the wall index of the reference wall for either the top or bottom skin.
      * With larger user specified preshrink come lower reference wall indices.
-     * 
+     *
      * The \p preshrink is updated to be relative to be the offset from the resulting reference wall.
      * A preshrink distance close to an existing wall will snap to that wall so that no offset has to be computed.
-     * 
+     *
      * \param[in,out] preshrink The expansion to be applied to the reference wall. The input is the expansion to be applied to the innermost wall, the output is the expansion applied to the returned reference wall.
      * \return The index of the reference wall to view as being inside the model for the skin area computation.
      */

@@ -13,9 +13,9 @@
 #include "utils/math.h"
 #include "utils/polygonUtils.h"
 
-#define MIN_AREA_SIZE (0.4 * 0.4) 
+#define MIN_AREA_SIZE (0.4 * 0.4)
 
-namespace cura 
+namespace cura
 {
 
 coord_t SkinInfillAreaComputation::getSkinLineWidth(const SliceMeshStorage& mesh, const LayerIndex& layer_nr)
@@ -509,7 +509,7 @@ void SkinInfillAreaComputation::generateInfillSupport(SliceMeshStorage& mesh)
     {
         SliceLayer& layer = mesh.layers[layer_idx];
         SliceLayer& layer_above = mesh.layers[layer_idx + 1];
-        
+
         Polygons inside_above;
         Polygons infill_above;
         for (SliceLayerPart& part_above : layer_above.parts)

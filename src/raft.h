@@ -23,7 +23,7 @@ public:
     /*!
      * \brief Get the height difference between the raft and the bottom of
      * layer 1.
-     * 
+     *
      * This is used for the filler layers because they don't use the
      * layer_0_z_overlap.
      */
@@ -32,7 +32,7 @@ public:
     /*!
      * \brief Get the amount of layers to fill the airgap and initial layer with
      * helper parts (support, prime tower, etc.).
-     * 
+     *
      * The initial layer gets a separate filler layer because we don't want to
      * apply the layer_0_z_overlap to it.
      */
@@ -52,7 +52,7 @@ public:
     /*!
      * \brief Get the total amount of extra layers below zero because there is a
      * raft.
-     * 
+     *
      * This includes the filler layers which are introduced in the air gap.
      */
     static size_t getTotalExtraLayers();

@@ -53,7 +53,7 @@ public:
      * get the scaling factor applied to convert real space to canvas space
      */
     double getScale() const;
-    
+
     /*!
      * transform a point in real space to canvas space
      */
@@ -78,10 +78,10 @@ public:
 
     /*!
      * \brief Draws a polyline on the canvas.
-     * 
+     *
      * The polyline is the set of line segments between each pair of consecutive
      * points in the specified vector.
-     * 
+     *
      * \param polyline A set of points between which line segments must be
      * drawn.
      * \param color The colour of the line segments. If this is not specified,
@@ -95,9 +95,9 @@ public:
 
     /*!
      * \brief Draws a dashed line on the canvas from point A to point B.
-     * 
+     *
      * This is useful in the case where multiple lines may overlap each other.
-     * 
+     *
      * \param a The starting endpoint of the line.
      * \param b The ending endpoint of the line.
      * \param color The stroke colour of the line.

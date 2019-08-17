@@ -46,10 +46,10 @@ void TreeSupport::generateSupportAreas(SliceDataStorage& storage)
 {
     const bool global_use_tree_support = Application::getInstance().current_slice->scene.current_mesh_group->settings.get<bool>("support_tree_enable");
 
-    if (!(global_use_tree_support || 
+    if (!(global_use_tree_support ||
           std::any_of(storage.meshes.cbegin(),
                       storage.meshes.cend(),
-                      [](const SliceMeshStorage& m) { 
+                      [](const SliceMeshStorage& m) {
                           return m.settings.get<bool>("support_tree_enable");
                       })))
     {
@@ -425,7 +425,7 @@ void TreeSupport::dropNodes(std::vector<std::unordered_set<Node*>>& contact_node
                         return branch_radius + branch_radius * (node.distance_to_top + 1) * diameter_angle_scale_factor;
                     }
                     else
-                    { 
+                    {
                         return branch_radius * (node.distance_to_top + 1) / tip_layers;
                     }
                 }();

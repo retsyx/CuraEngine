@@ -39,7 +39,7 @@ public:
         Position() {for(unsigned int n=0;n<NUM_AXIS;n++) axis[n] = 0;}
         Position(double x, double y, double z, double e) {axis[0] = x;axis[1] = y;axis[2] = z;axis[3] = e;}
         double axis[NUM_AXIS];
-        
+
         double& operator[](const int n) { return axis[n]; }
     };
 
@@ -47,7 +47,7 @@ public:
     {
     public:
         bool recalculate_flag;
-        
+
         double accelerate_until;
         double decelerate_after;
         Velocity initial_feedrate;
@@ -56,7 +56,7 @@ public:
         Velocity entry_speed;
         Velocity max_entry_speed;
         bool nominal_length_flag;
-        
+
         Velocity nominal_feedrate;
         double maxTravel;
         double distance;
@@ -76,7 +76,7 @@ private:
     Velocity max_z_jerk = 0.4;
     Velocity max_e_jerk = 5.0;
     Duration extra_time = 0.0;
-    
+
     Position previous_feedrate;
     Velocity previous_nominal_feedrate;
 
@@ -96,7 +96,7 @@ public:
     void setMaxXyJerk(const Velocity& jerk); //!< Set the max xy jerk to \p jerk
 
     void reset();
-    
+
     std::vector<Duration> calculate();
 private:
     void reverse_pass();

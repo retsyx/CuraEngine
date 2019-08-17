@@ -10,7 +10,7 @@
 #include "settings/types/Ratio.h"
 #include "utils/logoutput.h"
 
-namespace cura 
+namespace cura
 {
 
 void SkirtBrim::getFirstLayerOutline(SliceDataStorage& storage, const size_t primary_line_count, const bool is_skirt, Polygons& first_layer_outline)
@@ -164,7 +164,7 @@ void SkirtBrim::generate(SliceDataStorage& storage, Polygons first_layer_outline
         //  |+-+|     |+--+|
         //  || ||     ||[]|| > expand to fit an extra brim line
         //  |+-+|     |+--+|
-        //  +---+     +----+ 
+        //  +---+     +----+
         const int64_t primary_skirt_brim_width = (primary_line_count + primary_line_count % 2) * primary_extruder_skirt_brim_line_width; // always use an even number, because we will fil the area from both sides
 
         Polygons shield_brim;

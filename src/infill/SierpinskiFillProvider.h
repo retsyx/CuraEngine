@@ -17,10 +17,10 @@ class DensityProvider;
 
 /*!
  * Class for generating infill patterns using the SierpinskiFill class.
- * 
+ *
  * This class handles determining the maximum recursion depth, the initial triangle
  * and in general the configuration the SierpinskiFill class requires to be used as fill pattern.
- * 
+ *
  * This class also handles the density provider which is used to determine the local density at each location - if there is one.
  */
 class SierpinskiFillProvider

@@ -231,7 +231,7 @@ void LayerPlanBuffer::insertPreheatCommand_multiExtrusion(std::vector<ExtruderPl
         return;
     }
     double initial_print_temp = extruder_plan.required_start_temperature;
-    
+
     Preheat::WarmUpResult heating_time_and_from_temp = computeStandbyTempPlan(extruder_plans, extruder_plan_idx);
 
     if (heating_time_and_from_temp.total_time_window < extruder_settings.get<Duration>("machine_min_cool_heat_time_window"))
@@ -267,7 +267,7 @@ void LayerPlanBuffer::insertPreheatCommand_multiExtrusion(std::vector<ExtruderPl
 }
 
 void LayerPlanBuffer::insertTempCommands(std::vector<ExtruderPlan*>& extruder_plans, unsigned int extruder_plan_idx)
-{   
+{
     ExtruderPlan& extruder_plan = *extruder_plans[extruder_plan_idx];
     const size_t extruder = extruder_plan.extruder_nr;
 
@@ -280,13 +280,13 @@ void LayerPlanBuffer::insertTempCommands(std::vector<ExtruderPlan*>& extruder_pl
         const Settings& previous_extruder_settings = Application::getInstance().current_slice->scene.extruders[prev_extruder].settings;
         extruder_plan.prev_extruder_standby_temp = previous_extruder_settings.get<Temperature>("material_standby_temperature");
     }
-    
+
     if (prev_extruder == extruder)
     {
         insertPreheatCommand_singleExtrusion(*prev_extruder_plan, extruder, extruder_plan.required_start_temperature);
         prev_extruder_plan->extrusion_temperature_command = --prev_extruder_plan->inserts.end();
     }
-    else 
+    else
     {
         insertPreheatCommand_multiExtrusion(extruder_plans, extruder_plan_idx);
         insertFinalPrintTempCommand(extruder_plans, extruder_plan_idx - 1);
@@ -531,7 +531,7 @@ void LayerPlanBuffer::insertTempCommands()
                     {
                         gcode.setInitialTemp(extruder_idx, extruder_plan.extrusion_temperature.value_or(extruder_plan.required_start_temperature));
                     }
-                    else 
+                    else
                     {
                         gcode.setInitialTemp(extruder_idx, other_extruder_settings.get<Temperature>("material_standby_temperature"));
                     }

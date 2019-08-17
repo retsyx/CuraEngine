@@ -60,7 +60,7 @@ void TimeEstimateCalculator::reset()
     blocks.clear();
 }
 
-// Calculates the maximum allowable speed at this point when you must be able to reach target_velocity using the 
+// Calculates the maximum allowable speed at this point when you must be able to reach target_velocity using the
 // acceleration within the allotted distance.
 static inline Velocity max_allowable_speed(const Acceleration& acceleration, const Velocity& target_velocity, double distance)
 {
@@ -77,7 +77,7 @@ static inline float estimate_acceleration_distance(const Velocity& initial_rate,
     return (square(target_rate) - square(initial_rate)) / (2.0 * acceleration);
 }
 
-// This function gives you the point at which you must start braking (at the rate of -acceleration) if 
+// This function gives you the point at which you must start braking (at the rate of -acceleration) if
 // you started at speed initial_rate and accelerated until this point and want to end at the final_rate after
 // a total travel of distance. This can be used to compute the intersection point between acceleration and
 // deceleration in the cases where the trapezoid has no plateau (i.e. never reaches maximum speed)
@@ -186,7 +186,7 @@ void TimeEstimateCalculator::plan(Position newPos, Velocity feedrate, PrintFeatu
         block.distance = block.absDelta[3];
     }
     block.nominal_feedrate = feedrate;
-    
+
     Position current_feedrate;
     Position current_abs_feedrate;
     Ratio feedrate_factor = 1.0;
@@ -200,7 +200,7 @@ void TimeEstimateCalculator::plan(Position newPos, Velocity feedrate, PrintFeatu
         }
     }
     //TODO: XY_FREQUENCY_LIMIT
-    
+
     if (feedrate_factor < 1.0)
     {
         for(size_t n = 0; n < NUM_AXIS; n++)
@@ -210,7 +210,7 @@ void TimeEstimateCalculator::plan(Position newPos, Velocity feedrate, PrintFeatu
         }
         block.nominal_feedrate *= feedrate_factor;
     }
-    
+
     block.acceleration = acceleration;
     for(size_t n = 0; n < NUM_AXIS; n++)
     {
@@ -219,7 +219,7 @@ void TimeEstimateCalculator::plan(Position newPos, Velocity feedrate, PrintFeatu
             block.acceleration = max_acceleration[n];
         }
     }
-    
+
     Velocity vmax_junction = max_xy_jerk / 2;
     Ratio vmax_junction_factor = 1.0;
     if (current_abs_feedrate[Z_AXIS] > max_z_jerk / 2)
@@ -232,7 +232,7 @@ void TimeEstimateCalculator::plan(Position newPos, Velocity feedrate, PrintFeatu
     }
     vmax_junction = std::min(vmax_junction, block.nominal_feedrate);
     const Velocity safe_speed = vmax_junction;
-    
+
     if ((blocks.size() > 0) && (previous_nominal_feedrate > 0.0001))
     {
         const Velocity xy_jerk = sqrt(square(current_feedrate[X_AXIS] - previous_feedrate[X_AXIS]) + square(current_feedrate[Y_AXIS] - previous_feedrate[Y_AXIS]));
@@ -240,11 +240,11 @@ void TimeEstimateCalculator::plan(Position newPos, Velocity feedrate, PrintFeatu
         if (xy_jerk > max_xy_jerk)
         {
             vmax_junction_factor = Ratio(max_xy_jerk / xy_jerk);
-        } 
+        }
         if (fabs(current_feedrate[Z_AXIS] - previous_feedrate[Z_AXIS]) > max_z_jerk)
         {
             vmax_junction_factor = std::min(vmax_junction_factor, Ratio(max_z_jerk / fabs(current_feedrate[Z_AXIS] - previous_feedrate[Z_AXIS])));
-        } 
+        }
         if (fabs(current_feedrate[E_AXIS] - previous_feedrate[E_AXIS]) > max_e_jerk)
         {
             vmax_junction_factor = std::min(vmax_junction_factor, Ratio(max_e_jerk / fabs(current_feedrate[E_AXIS] - previous_feedrate[E_AXIS])));
@@ -274,7 +274,7 @@ std::vector<Duration> TimeEstimateCalculator::calculate()
     reverse_pass();
     forward_pass();
     recalculate_trapezoids();
-    
+
     std::vector<Duration> totals(static_cast<unsigned char>(PrintFeatureType::NumPrintFeatureTypes), 0.0);
     totals[static_cast<unsigned char>(PrintFeatureType::NoneType)] = extra_time; // Extra time (pause for minimum layer time, etc) is marked as NoneType
     for(unsigned int n = 0; n < blocks.size(); n++)
@@ -371,8 +371,8 @@ void TimeEstimateCalculator::forward_pass()
     planner_forward_pass_kernel(block[1], block[2], nullptr);
 }
 
-// Recalculates the trapezoid speed profiles for all blocks in the plan according to the 
-// entry_factor for each junction. Must be called by planner_recalculate() after 
+// Recalculates the trapezoid speed profiles for all blocks in the plan according to the
+// entry_factor for each junction. Must be called by planner_recalculate() after
 // updating the blocks.
 void TimeEstimateCalculator::recalculate_trapezoids()
 {

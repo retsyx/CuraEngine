@@ -25,7 +25,7 @@ void logError(const char* fmt, ...);
 
 /*
  * \brief Report a warning message.
- * 
+ *
  * Always reported, regardless of verbosity level.
  */
 void logWarning(const char* fmt, ...);

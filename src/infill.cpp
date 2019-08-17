@@ -164,7 +164,7 @@ void Infill::_generate(Polygons& result_polygons, Polygons& result_lines, const 
     {
         //The list should be empty because it will be again filled completely. Otherwise might have double lines.
         result_lines.clear();
-        
+
         connectLines(result_lines);
     }
     crossings_on_line.clear();
@@ -380,7 +380,7 @@ void Infill::generateCrossInfill(const SierpinskiFillProvider& cross_fill_provid
         Polygons cross_pattern_polygons;
         cross_pattern_polygons.add(cross_pattern_polygon);
         Polygons poly_lines = outline.intersectionPolyLines(cross_pattern_polygons);
-        
+
         for (PolygonRef poly_line : poly_lines)
         {
             for (unsigned int point_idx = 1; point_idx < poly_line.size(); point_idx++)
@@ -473,15 +473,15 @@ void Infill::generateZigZagInfill(Polygons& result, const coord_t line_distance,
     generateLinearBasedInfill(outline_offset - infill_line_width / 2, result, line_distance, rotation_matrix, zigzag_processor, connected_zigzags, shift);
 }
 
-/* 
+/*
  * algorithm:
  * 1. for each line segment of each polygon:
  *      store the intersections of that line segment with all scanlines in a mapping (vector of vectors) from scanline to intersections
  *      (zigzag): add boundary segments to result
  * 2. for each scanline:
- *      sort the associated intersections 
+ *      sort the associated intersections
  *      and connect them using the even-odd rule
- * 
+ *
  * rough explanation of the zigzag algorithm:
  * while walking around (each) polygon (1.)
  *  if polygon intersects with even scanline
@@ -489,11 +489,11 @@ void Infill::generateZigZagInfill(Polygons& result, const coord_t line_distance,
  *  when polygon intersects with a scanline again
  *      stop boundary segment (stop adding segments to the [result])
  *  (see infill/ZigzagConnectorProcessor.h for actual implementation details)
- * 
- * 
+ *
+ *
  * we call the areas between two consecutive scanlines a 'scansegment'.
  * Scansegment x is the area between scanline x and scanline x+1
- * Edit: the term scansegment is wrong, since I call a boundary segment leaving from an even scanline to the left as belonging to an even scansegment, 
+ * Edit: the term scansegment is wrong, since I call a boundary segment leaving from an even scanline to the left as belonging to an even scansegment,
  *  while I also call a boundary segment leaving from an even scanline toward the right as belonging to an even scansegment.
  */
 void Infill::generateLinearBasedInfill(const int outline_offset, Polygons& result, const int line_distance, const PointMatrix& rotation_matrix, ZigzagConnectorProcessor& zigzag_connector_processor, const bool connected_zigzags, coord_t extra_shift)
@@ -581,11 +581,11 @@ void Infill::generateLinearBasedInfill(const int outline_offset, Polygons& resul
             Point p1 = poly[point_idx];
             if (p1.X == p0.X)
             {
-                zigzag_connector_processor.registerVertex(p1); 
+                zigzag_connector_processor.registerVertex(p1);
                 // TODO: how to make sure it always adds the shortest line? (in order to prevent overlap with the zigzag connectors)
                 // note: this is already a problem for normal infill, but hasn't really bothered anyone so far.
                 p0 = p1;
-                continue; 
+                continue;
             }
 
             int scanline_idx0;
@@ -594,7 +594,7 @@ void Infill::generateLinearBasedInfill(const int outline_offset, Polygons& resul
             // in case the next segment moves back from that scanline either 2 or 0 scanline-boundary intersections are created
             // otherwise only 1 will be created, counting as an actual intersection
             int direction = 1;
-            if (p0.X < p1.X) 
+            if (p0.X < p1.X)
             {
                 scanline_idx0 = computeScanSegmentIdx(p0.X - shift, line_distance) + 1; // + 1 cause we don't cross the scanline of the first scan segment
                 scanline_idx1 = computeScanSegmentIdx(p1.X - shift, line_distance); // -1 cause the vertex point is handled in the next segment (or not in the case which looks like >)
@@ -621,7 +621,7 @@ void Infill::generateLinearBasedInfill(const int outline_offset, Polygons& resul
         }
         zigzag_connector_processor.registerPolyFinished();
     }
-    
+
     //Gather all crossings per scanline and find out which crossings belong together, then store them in crossings_on_line.
     for (int scanline_index = min_scanline_index; scanline_index < max_scanline_index; scanline_index++)
     {

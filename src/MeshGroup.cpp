@@ -91,8 +91,8 @@ void MeshGroup::finalize()
         meshgroup_offset.x = settings.get<coord_t>("machine_width") / 2;
         meshgroup_offset.y = settings.get<coord_t>("machine_depth") / 2;
     }
-    
-    // If a mesh position was given, put the mesh at this position in 3D space. 
+
+    // If a mesh position was given, put the mesh at this position in 3D space.
     for(Mesh& mesh : meshes)
     {
         Point3 mesh_offset(mesh.settings.get<coord_t>("mesh_position_x"), mesh.settings.get<coord_t>("mesh_position_y"), mesh.settings.get<coord_t>("mesh_position_z"));
@@ -200,10 +200,10 @@ bool loadMeshSTL(Mesh* mesh, const char* filename, const FMatrix3x3& matrix)
     {
         return false;
     }
-    
+
     //assign filename to mesh_name
     mesh->mesh_name = filename;
-    
+
     //Skip any whitespace at the beginning of the file.
     unsigned long long num_whitespace = 0; //Number of whitespace characters.
     unsigned char whitespace;

@@ -10,18 +10,18 @@
 #include "../utils/logoutput.h"
 
 namespace cura {
-    
-double Progress::times [] = 
-{ 
-    0.0,    // START   = 0, 
-    5.269,  // SLICING = 1, 
-    1.533,  // PARTS   = 2, 
+
+double Progress::times [] =
+{
+    0.0,    // START   = 0,
+    5.269,  // SLICING = 1,
+    1.533,  // PARTS   = 2,
     71.811, // INSET_SKIN = 3
-    51.009, // SUPPORT = 4, 
-    154.62, // EXPORT  = 5, 
+    51.009, // SUPPORT = 4,
+    154.62, // EXPORT  = 5,
     0.1     // FINISH  = 6
 };
-std::string Progress::names [] = 
+std::string Progress::names [] =
 {
     "start",
     "slice",
@@ -74,7 +74,7 @@ void Progress::messageProgressStage(Progress::Stage stage, TimeKeeper* time_keep
         {
             time_keeper->restart();
         }
-        
+
         if ((int)stage < (int)Stage::FINISH)
         {
             log("Starting %s...\n", names[(int)stage].c_str());

@@ -44,9 +44,9 @@ struct AABB3D
 
     /*!
      * Check whether this aabb overlaps with another.
-     * 
+     *
      * In the boundary case false is returned.
-     * 
+     *
      * \param other the aabb to check for overlaps with
      * \return Whether the two aabbs overlap
      */
@@ -86,7 +86,7 @@ struct AABB3D
 
     /*!
      * Offset the bounding box in the horizontal direction; outward or inward.
-     * 
+     *
      * \param outset the distance (positive or negative) to expand the bounding box outward
      */
     void expandXY(int outset);

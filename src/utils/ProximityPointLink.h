@@ -14,7 +14,7 @@
 #include "ListPolyIt.h"
 
 
-namespace cura 
+namespace cura
 {
 
 /*!

@@ -30,7 +30,7 @@ public:
         test_square.emplace_back(1000, 1000);
         test_square.emplace_back(0, 1000);
         test_shapes.add(test_square);
-    
+
         test_square2.emplace_back(1100, 1500);
         test_square2.emplace_back(2000, 1500);
         test_square2.emplace_back(2000, -500);

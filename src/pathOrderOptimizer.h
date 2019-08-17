@@ -38,7 +38,7 @@ public:
 
 /*!
  * Parts order optimization class.
- * 
+ *
  * Utility class for optimizing the path order by minimizing the distance traveled between printing different parts in the layer.
  * The order of polygons is optimized and the startingpoint within each polygon is chosen.
  */
@@ -134,7 +134,7 @@ public:
 private:
     /*!
      * Update LineOrderOptimizer::polyStart if the current line is better than the current best.
-     * 
+     *
      * \param poly_idx[in] The index in LineOrderOptimizer::polygons for the current line to test
      * \param best[in, out] The index of current best line
      * \param best_score[in, out] The distance score for the current best line

@@ -18,7 +18,7 @@
 #include "utils/optional.h"
 #include "utils/polygon.h"
 
-namespace cura 
+namespace cura
 {
 
 class Comb;
@@ -29,7 +29,7 @@ class WallOverlapComputation;
 
 /*!
  * An extruder plan contains all planned paths (GCodePath) pertaining to a single extruder train.
- * 
+ *
  * It allows for temperature command inserts which can be inserted in between paths.
  */
 class ExtruderPlan
@@ -45,10 +45,10 @@ protected:
     /*!
      * The required temperature at the start of this extruder plan
      * or the temp to which to heat gradually over the layer change between this plan and the previous with the same extruder.
-     * 
+     *
      * In case this extruder plan uses a different extruder than the last extruder plan:
      * this is the temperature to which to heat and wait before starting this extruder.
-     * 
+     *
      * In case this extruder plan uses the same extruder as the previous extruder plan (previous layer):
      * this is the temperature used to heat to gradually when moving from the previous extruder layer to the next.
      * In that case no temperature (and wait) command will be inserted from this value, but a NozzleTempInsert is used instead.
@@ -66,9 +66,9 @@ public:
 
     /*!
      * Simple contructor.
-     * 
+     *
      * \warning Doesn't set the required temperature yet.
-     * 
+     *
      * \param extruder The extruder number for which this object is a plan.
      * \param layer_nr The layer index of the layer that this extruder plan is
      * part of.
@@ -78,10 +78,10 @@ public:
 
     /*!
      * Add a new Insert, constructed with the given arguments
-     * 
+     *
      * \see NozzleTempInsert
-     * 
-     * \param contructor_args The arguments for the constructor of an insert 
+     *
+     * \param contructor_args The arguments for the constructor of an insert
      */
     template<typename... Args>
     void insertCommand(Args&&... contructor_args)
@@ -91,7 +91,7 @@ public:
 
     /*!
      * Insert the inserts into gcode which should be inserted before \p path_idx
-     * 
+     *
      * \param path_idx The index into ExtruderPlan::paths which is currently being consider for temperature command insertion
      * \param gcode The gcode exporter to which to write the temperature command.
      */
@@ -106,15 +106,15 @@ public:
 
     /*!
      * Insert all remaining temp inserts into gcode, to be called at the end of an extruder plan
-     * 
+     *
      * Inserts temperature commands which should be inserted _after_ the last path.
      * Also inserts all temperatures which should have been inserted earlier,
      * but for which ExtruderPlan::handleInserts hasn't been called correctly.
-     * 
+     *
      * \param gcode The gcode exporter to which to write the temperature command.
      */
     void handleAllRemainingInserts(GCodeExport& gcode)
-    { 
+    {
         while ( ! inserts.empty() )
         { // handle the Insert to be inserted before this path_idx (and all inserts not handled yet)
             NozzleTempInsert& insert = inserts.front();
@@ -125,8 +125,8 @@ public:
     }
 
     /*!
-     * Applying speed corrections for minimal layer times and determine the fanSpeed. 
-     * 
+     * Applying speed corrections for minimal layer times and determine the fanSpeed.
+     *
      * \param force_minimal_layer_time Whether we should apply speed changes and perhaps a head lift in order to meet the minimal layer time
      * \param starting_position The position the head was before starting this extruder plan
      */
@@ -134,43 +134,43 @@ public:
 
     /*!
      * Set the extrude speed factor. This is used for printing slower than normal.
-     * 
+     *
      * Leaves the extrusion speed as is for values of 1.0
-     * 
+     *
      * \param speedFactor The factor by which to alter the extrusion move speed
      */
     void setExtrudeSpeedFactor(const Ratio speed_factor);
 
     /*!
      * Get the extrude speed factor. This is used for printing slower than normal.
-     * 
+     *
      * \return The factor by which to alter the extrusion move speed
      */
     double getExtrudeSpeedFactor();
 
     /*!
      * Set the travel speed factor. This is used for performing non-extrusion travel moves slower than normal.
-     * 
+     *
      * Leaves the extrusion speed as is for values of 1.0
-     * 
+     *
      * \param speedFactor The factor by which to alter the non-extrusion move speed
      */
     void setTravelSpeedFactor(Ratio speed_factor);
 
     /*!
      * Get the travel speed factor. This is used for travelling slower than normal.
-     * 
+     *
      * Limited to at most 1.0
-     * 
+     *
      * \return The factor by which to alter the non-extrusion move speed
      */
     double getTravelSpeedFactor();
 
     /*!
      * Get the fan speed computed for this extruder plan
-     * 
+     *
      * \warning assumes ExtruderPlan::processFanSpeedAndMinimalLayerTime has already been called
-     * 
+     *
      * \return The fan speed computed in processFanSpeedAndMinimalLayerTime
      */
     double getFanSpeed();
@@ -195,21 +195,21 @@ protected:
 
     /*!
      * Set the fan speed to be used while printing this extruder plan
-     * 
+     *
      * \param fan_speed The speed for the fan
      */
     void setFanSpeed(double fan_speed);
 
     /*!
      * Force the minimal layer time to hold by slowing down and lifting the head if required.
-     * 
+     *
      */
     void forceMinimalLayerTime(double minTime, double minimalSpeed, double travelTime, double extrusionTime);
 
     /*!
      * Compute naive time estimates (without accounting for slow down at corners etc.) and naive material estimates (without accounting for MergeInfillLines)
      * and store them in each ExtruderPlan and each GCodePath.
-     * 
+     *
      * \param starting_position The position the head was in before starting this layer
      * \return the total estimates of this layer
      */
@@ -218,15 +218,15 @@ protected:
 
 class LayerPlanBuffer; // forward declaration to prevent circular dependency
 
-/*! 
+/*!
  * The LayerPlan class stores multiple moves that are planned.
- * 
- * 
+ *
+ *
  * It facilitates the combing to keep the head inside the print.
  * It also keeps track of the print time estimate for this planning so speed adjustments can be made for the minimal-layer-time.
- * 
+ *
  * A LayerPlan is also knows as a 'layer plan'.
- * 
+ *
  */
 class LayerPlan : public NoCopy
 {
@@ -280,7 +280,7 @@ private:
     /*!
      * Either create a new path with the given config or return the last path if it already had that config.
      * If LayerPlan::forceNewPathStart has been called a new path will always be returned.
-     * 
+     *
      * \param config The config used for the path returned
      * \param space_fill_type The type of space filling which this path employs
      * \param flow (optional) A ratio for the extrusion speed
@@ -293,12 +293,12 @@ private:
 public:
     /*!
      * Force LayerPlan::getLatestPathWithConfig to return a new path.
-     * 
-     * This function is introduced because in some cases 
-     * LayerPlan::getLatestPathWithConfig is called consecutively with the same config pointer, 
+     *
+     * This function is introduced because in some cases
+     * LayerPlan::getLatestPathWithConfig is called consecutively with the same config pointer,
      * though the content of the config has changed.
-     * 
-     * Example cases: 
+     *
+     * Example cases:
      * - when changing extruder, the same travel config is used, but its extruder field is changed.
      */
     void forceNewPathStart();
@@ -352,7 +352,7 @@ public:
 
     /*!
      * Get the last planned position, or if no position has been planned yet, the user specified layer start position.
-     * 
+     *
      * \warning The layer start position might be outside of the build plate!
      */
     Point getLastPlannedPositionOrStartingPosition() const
@@ -394,14 +394,14 @@ public:
     /*!
      * Get the destination state of the first travel move.
      * This consists of the location and whether the destination was inside the model, or e.g. to support
-     * 
+     *
      * Returns nothing if the layer is empty and no travel move was ever made.
      */
     std::optional<std::pair<Point, bool>> getFirstTravelDestinationState() const;
 
     /*!
     * Set whether the next destination is inside a layer part or not.
-    * 
+    *
     * Features like infill, walls, skin etc. are considered inside.
     * Features like prime tower and support are considered outside.
     */
@@ -452,20 +452,20 @@ public:
     /*!
      * Add a travel path to a certain point, retract if needed and when avoiding boundary crossings:
      * avoiding obstacles and comb along the boundary of parts.
-     * 
+     *
      * \warning For the first travel move in a layer this will result in a bogous travel move with no combing and no retraction
      * This travel move needs to be fixed afterwards
-     * 
+     *
      * \param p The point to travel to
      * \param force_comb_retract Whether to force a retraction to occur when travelling to this point. (Only enforced when distance is larger than retraction_min_travel)
      */
     GCodePath& addTravel(Point p, bool force_comb_retract = false);
-    
+
     /*!
      * Add a travel path to a certain point and retract if needed.
-     * 
+     *
      * No combing is performed.
-     * 
+     *
      * \param p The point to travel to
      * \param path (optional) The travel path to which to add the point \p p
      */
@@ -478,7 +478,7 @@ public:
 
     /*!
      * Add an extrusion move to a certain point, optionally with a different flow than the one in the \p config.
-     * 
+     *
      * \param p The point to extrude to
      * \param config The config with which to extrude
      * \param space_fill_type Of what space filling type this extrusion move is a part
@@ -504,13 +504,13 @@ public:
 
     /*!
      * Add polygons to the gcode with optimized order.
-     * 
+     *
      * When \p spiralize is true, each polygon will gradually increase from a z corresponding to this layer to the z corresponding to the next layer.
      * Doing this for each polygon means there is a chance for the print head to crash into already printed parts,
      * but doing it for the last polygon only would mean you are printing half of the layer in non-spiralize mode,
      * while each layer starts with a different part.
      * Two towers would result in alternating spiralize and non-spiralize layers.
-     * 
+     *
      * \param polygons The polygons
      * \param config The config with which to print the polygon lines
      * \param wall_overlap_computation The wall overlap compensation calculator for each given segment (optionally nullptr)
@@ -608,7 +608,7 @@ public:
 
     /*!
      * Write the planned paths to gcode
-     * 
+     *
      * \param gcode The gcode to write the planned paths to
      */
     void writeGCode(GCodeExport& gcode);
@@ -616,18 +616,18 @@ public:
     /*!
      * Whether the current retracted path is to be an extruder switch retraction.
      * This function is used to avoid a G10 S1 after a G10.
-     * 
+     *
      * \param extruder_plan_idx The index of the current extruder plan
-     * \param path_idx The index of the current retracted path 
+     * \param path_idx The index of the current retracted path
      * \return Whether the path should be an extgruder switch retracted path
      */
     bool makeRetractSwitchRetract(unsigned int extruder_plan_idx, unsigned int path_idx);
-    
+
     /*!
      * Writes a path to GCode and performs coasting, or returns false if it did nothing.
-     * 
+     *
      * Coasting replaces the last piece of an extruded path by move commands and uses the oozed material to lay down lines.
-     * 
+     *
      * \param gcode The gcode to write the planned paths to.
      * \param extruder_plan_idx The index of the current extruder plan.
      * \param path_idx The index into LayerPlan::paths for the next path to be
@@ -638,16 +638,16 @@ public:
     bool writePathWithCoasting(GCodeExport& gcode, const size_t extruder_plan_idx, const size_t path_idx, const coord_t layer_thickness);
 
     /*!
-     * Applying speed corrections for minimal layer times and determine the fanSpeed. 
-     * 
+     * Applying speed corrections for minimal layer times and determine the fanSpeed.
+     *
      * \param starting_position The position of the print head when the first extruder plan of this layer starts
      */
     void processFanSpeedAndMinimalLayerTime(Point starting_position);
-    
+
     /*!
      * Add a travel move to the layer plan to move inside the current layer part by a given distance away from the outline.
      * This is supposed to be called when the nozzle is around the boundary of a layer part, not when the nozzle is in the middle of support, or in the middle of the air.
-     * 
+     *
      * \param distance The distance to the comb boundary after we moved inside it.
      */
     void moveInsideCombBoundary(const coord_t distance);

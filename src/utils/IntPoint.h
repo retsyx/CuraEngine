@@ -139,7 +139,7 @@ INLINE int angle(const Point& p)
 }
 
 }//namespace cura
-    
+
 namespace std {
 template <>
 struct hash<cura::Point> {
@@ -149,7 +149,7 @@ struct hash<cura::Point> {
         int result = 89;
         result = result * prime + pp.X;
         result = result * prime + pp.Y;
-        return result; 
+        return result;
     }
 };
 }

@@ -16,7 +16,7 @@ class AABB;
 class SierpinskiFillProvider;
 class SliceMeshStorage;
 
-class Infill 
+class Infill
 {
     static constexpr int perimeter_gaps_extra_offset = 15; // extra offset so that the perimeter gaps aren't created everywhere due to rounding errors
 
@@ -48,7 +48,7 @@ public:
      * and the polygons which result from offsetting it by the \p outline_offset
      * and then expanding it again by half the \p infill_line_width
      * is added to the \p perimeter_gaps
-     * 
+     *
      * \param[out] perimeter_gaps (optional output) The areas in between consecutive insets when Concentric infill is used.
      */
     Infill(EFillMethod pattern
@@ -97,7 +97,7 @@ public:
 
     /*!
      * Generate the infill.
-     * 
+     *
      * \param result_polygons (output) The resulting polygons (from concentric infill)
      * \param result_lines (output) The resulting line segments (from linear infill types)
      * \param mesh The mesh for which to generate infill (should only be used for non-helper objects)
@@ -113,12 +113,12 @@ private:
 
     /*!
      * Multiply the infill lines, so that any single line becomes [infill_multiplier] lines next to each other.
-     * 
+     *
      * This is done in a way such that there is not overlap between the lines
      * except the middle original one if the multiplier is odd.
-     * 
+     *
      * This introduces a lot of line segments.
-     * 
+     *
      * \param[in,out] result_polygons The polygons to be multiplied (input and output)
      * \param[in,out] result_lines The lines to be multiplied (input and output)
      */
@@ -222,12 +222,12 @@ private:
      * \param result (output) The resulting polygons
      */
     void generateGyroidInfill(Polygons& result);
-    
+
     /*!
      * Generate sparse concentric infill
-     * 
+     *
      * Also adds \ref Infill::perimeter_gaps between \ref Infill::in_outline and the first wall
-     * 
+     *
      * \param result (output) The resulting polygons
      * \param inset_value The offset between each consecutive two polygons
      */
@@ -268,7 +268,7 @@ private:
     /*!
      * Generate a single shifting square grid of infill lines.
      * This is used in tetrahedral infill (Octet infill) and in Quarter Cubic infill.
-     * 
+     *
      * \param pattern_z_shift The amount by which to shift the whole pattern down
      * \param angle_shift The angle to add to the infill_angle
      * \param[out] result (output) The resulting lines
@@ -305,7 +305,7 @@ private:
     /*!
      * Convert a mapping from scanline to line_segment-scanline-intersections (\p cut_list) into line segments, using the even-odd rule
      * \param[out] result (output) The resulting lines
-     * \param rotation_matrix The rotation matrix (un)applied to enforce the angle of the infill 
+     * \param rotation_matrix The rotation matrix (un)applied to enforce the angle of the infill
      * \param scanline_min_idx The lowest index of all scanlines crossing the polygon
      * \param line_distance The distance between two lines which are in the same direction
      * \param boundary The axis aligned boundary box within which the polygon is
@@ -323,29 +323,29 @@ private:
 
     /*!
      * generate lines within the area of \p in_outline, at regular intervals of \p line_distance
-     * 
+     *
      * idea:
      * intersect a regular grid of 'scanlines' with the area inside \p in_outline
-     * 
+     *
      * \param[out] result (output) The resulting lines
      * \param line_distance The distance between two lines which are in the same direction
      * \param infill_rotation The angle of the generated lines
      * \param extra_shift extra shift of the scanlines in the direction perpendicular to the infill_rotation
      */
     void generateLineInfill(Polygons& result, int line_distance, const double& infill_rotation, coord_t extra_shift);
-    
+
     /*!
      * Function for creating linear based infill types (Lines, ZigZag).
-     * 
+     *
      * This function implements the basic functionality of Infill::generateLineInfill (see doc of that function),
      * but makes calls to a ZigzagConnectorProcessor which handles what to do with each line segment - scanline intersection.
-     * 
+     *
      * It is called only from Infill::generateLineinfill and Infill::generateZigZagInfill.
-     * 
+     *
      * \param outline_offset An offset from the reference polygon (Infill::in_outline) to get the actual outline within which to generate infill
      * \param[out] result (output) The resulting lines
      * \param line_distance The distance between two lines which are in the same direction
-     * \param rotation_matrix The rotation matrix (un)applied to enforce the angle of the infill 
+     * \param rotation_matrix The rotation matrix (un)applied to enforce the angle of the infill
      * \param zigzag_connector_processor The processor used to generate zigzag connectors
      * \param connected_zigzags Whether to connect the endpiece zigzag segments on both sides to the same infill line
      * \param extra_shift extra shift of the scanlines in the direction perpendicular to the fill_angle
@@ -353,48 +353,48 @@ private:
     void generateLinearBasedInfill(const int outline_offset, Polygons& result, const int line_distance, const PointMatrix& rotation_matrix, ZigzagConnectorProcessor& zigzag_connector_processor, const bool connected_zigzags, coord_t extra_shift);
 
     /*!
-     * 
+     *
      * generate lines within the area of [in_outline], at regular intervals of [line_distance]
      * idea:
      * intersect a regular grid of 'scanlines' with the area inside [in_outline] (see generateLineInfill)
      * zigzag:
      * include pieces of boundary, connecting the lines, forming an accordion like zigzag instead of separate lines    |_|^|_|
-     * 
+     *
      * Note that ZigZag consists of 3 types:
      * - without endpieces
      * - with disconnected endpieces
      * - with connected endpieces
-     * 
+     *
      *     <--
      *     ___
      *    |   |   |
      *    |   |   |
      *    |   |___|
      *         -->
-     * 
+     *
      *        ^ = even scanline
      *  ^            ^ no endpieces
-     * 
+     *
      * start boundary from even scanline! :D
-     * 
-     * 
+     *
+     *
      *                 v  disconnected end piece: leave out last line segment
      *          _____
      *   |     |     |  \                     .
      *   |     |     |  |
      *   |_____|     |__/
-     * 
+     *
      *   ^     ^     ^    scanlines
-     * 
-     * 
+     *
+     *
      *                 v  connected end piece
      *          ________
      *   |     |     |  \                      .
      *   |     |     |  |
      *   |_____|     |__/                       .
-     * 
+     *
      *   ^     ^     ^    scanlines
-     * 
+     *
      * \param[out] result (output) The resulting lines
      * \param line_distance The distance between two lines which are in the same direction
      * \param infill_rotation The angle of the generated lines

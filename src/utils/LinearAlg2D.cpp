@@ -9,7 +9,7 @@
 
 #include "IntPoint.h" // dot
 
-namespace cura 
+namespace cura
 {
 
 float LinearAlg2D::getAngleLeft(const Point& a, const Point& b, const Point& c)
@@ -23,7 +23,7 @@ float LinearAlg2D::getAngleLeft(const Point& a, const Point& b, const Point& c)
     {
         return angle;
     }
-    else 
+    else
     {
         return M_PI * 2 + angle;
     }

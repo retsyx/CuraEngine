@@ -178,10 +178,10 @@ int bridgeAngle(const Settings& settings, const Polygons& skin_outline, const Sl
             idx2 = n;
         }
     }
-    
+
     if (idx1 < 0 || idx2 < 0)
         return -1;
-    
+
     Point center1 = islands[idx1].centerOfMass();
     Point center2 = islands[idx2].centerOfMass();
 

@@ -152,7 +152,7 @@ Polygons LayerPlan::computeCombBoundaryInside(const size_t max_inset)
             return storage.raftOutline.offset(MM2INT(0.1));
         }
     }
-    else 
+    else
     {
         Polygons comb_boundary;
         for (const SliceMeshStorage& mesh : storage.meshes)
@@ -276,7 +276,7 @@ bool LayerPlan::setExtruder(const size_t extruder_nr)
         {
             end_pos += getLastPlannedPositionOrStartingPosition();
         }
-        else 
+        else
         {
             const Point extruder_offset(extruder->settings.get<coord_t>("machine_nozzle_offset_x"), extruder->settings.get<coord_t>("machine_nozzle_offset_y"));
             end_pos += extruder_offset; // absolute end pos is given as a head position
@@ -290,7 +290,7 @@ bool LayerPlan::setExtruder(const size_t extruder_nr)
     { // first extruder plan in a layer might be empty, cause it is made with the last extruder planned in the previous layer
         extruder_plans.back().extruder_nr = extruder_nr;
     }
-    else 
+    else
     {
         extruder_plans.emplace_back(extruder_nr, layer_nr, is_initial_layer, is_raft_layer, layer_thickness, fan_speed_layer_time_settings_per_extruder[extruder_nr], storage.retraction_config_per_extruder[extruder_nr]);
         assert(extruder_plans.size() <= Application::getInstance().current_slice->scene.extruders.size() && "Never use the same extruder twice on one layer!");
@@ -305,7 +305,7 @@ bool LayerPlan::setExtruder(const size_t extruder_nr)
         {
             start_pos += getLastPlannedPositionOrStartingPosition();
         }
-        else 
+        else
         {
             Point extruder_offset(extruder->settings.get<coord_t>("machine_nozzle_offset_x"), extruder->settings.get<coord_t>("machine_nozzle_offset_y"));
             start_pos += extruder_offset; // absolute start pos is given as a head position
@@ -459,7 +459,7 @@ GCodePath& LayerPlan::addTravel(Point p, bool force_comb_retract)
             }
         }
     }
-    
+
     // no combing? retract only when path is not shorter than minimum travel distance
     if (!combed && !is_first_travel_of_layer && last_planned_position && !shorterThen(*last_planned_position - p, retraction_config.retraction_min_travel_distance))
     {
@@ -560,7 +560,7 @@ void LayerPlan::addPolygon(ConstPolygonRef polygon, int start_idx, const GCodePa
             forceNewPathStart();
         }
     }
-    else 
+    else
     {
         logWarning("WARNING: line added as polygon! (LayerPlan)\n");
     }
@@ -578,7 +578,7 @@ void LayerPlan::addPolygonsByOptimizer(const Polygons& polygons, const GCodePath
         orderOptimizer.addPolygon(polygons[poly_idx]);
     }
     orderOptimizer.optimize();
-    
+
     if(reverse_order == false)
     {
         for (unsigned int poly_idx : orderOptimizer.polyOrder)
@@ -1220,7 +1220,7 @@ void LayerPlan::spiralizeWallSlice(const GCodePathConfig& config, ConstPolygonRe
 
 void ExtruderPlan::forceMinimalLayerTime(double minTime, double minimalSpeed, double travelTime, double extrudeTime)
 {
-    double totalTime = travelTime + extrudeTime; 
+    double totalTime = travelTime + extrudeTime;
     if (totalTime < minTime && extrudeTime > 0.0)
     {
         double minExtrudeTime = minTime - travelTime;
@@ -1242,13 +1242,13 @@ void ExtruderPlan::forceMinimalLayerTime(double minTime, double minimalSpeed, do
         {
             setExtrudeSpeedFactor(factor);
         }
-        else 
+        else
         {
             factor = 1.0;
         }
-        
+
         double inv_factor = 1.0 / factor; // cause multiplication is faster than division
-        
+
         // Adjust stored naive time estimates
         estimates.extrude_time *= inv_factor;
         for (GCodePath& path : paths)
@@ -1279,13 +1279,13 @@ TimeMaterialEstimates ExtruderPlan::computeNaiveTimeEstimates(Point starting_pos
             is_extrusion_path = true;
             path_time_estimate = &path.estimates.extrude_time;
         }
-        else 
+        else
         {
             if (path.retract)
             {
                 path_time_estimate = &path.estimates.retracted_travel_time;
             }
-            else 
+            else
             {
                 path_time_estimate = &path.estimates.unretracted_travel_time;
             }
@@ -1296,7 +1296,7 @@ TimeMaterialEstimates ExtruderPlan::computeNaiveTimeEstimates(Point starting_pos
                 {
                     retract_unretract_time = retraction_config.distance / retraction_config.speed;
                 }
-                else 
+                else
                 {
                     retract_unretract_time = retraction_config.distance / retraction_config.primeSpeed;
                 }
@@ -1410,7 +1410,7 @@ void LayerPlan::writeGCode(GCodeExport& gcode)
     communication->setLayerForSend(layer_nr);
     communication->sendCurrentPosition(gcode.getPositionXY());
     gcode.setLayerNr(layer_nr);
-    
+
     gcode.writeLayerComment(layer_nr);
 
     // flow-rate compensation
@@ -1500,7 +1500,7 @@ void LayerPlan::writeGCode(GCodeExport& gcode)
 
         extruder_plan.inserts.sort([](const NozzleTempInsert& a, const NozzleTempInsert& b) -> bool
             {
-                return  a.path_idx < b.path_idx; 
+                return  a.path_idx < b.path_idx;
             });
 
         const ExtruderTrain& extruder = Application::getInstance().current_slice->scene.extruders[extruder_nr];
@@ -1510,7 +1510,7 @@ void LayerPlan::writeGCode(GCodeExport& gcode)
         for(unsigned int path_idx = 0; path_idx < paths.size(); path_idx++)
         {
             extruder_plan.handleInserts(path_idx, gcode);
-            
+
             GCodePath& path = paths[path_idx];
 
             if (path.perform_prime)
@@ -1679,7 +1679,7 @@ void LayerPlan::writeGCode(GCodeExport& gcode)
             const RetractionConfig& retraction_config = storage.retraction_config_per_extruder[gcode.getExtruderNr()];
             gcode.writeRetraction(retraction_config);
             if (extruder_plan_idx == extruder_plans.size() - 1 || !extruder.settings.get<bool>("machine_extruder_end_pos_abs"))
-            { // only move the head if it's the last extruder plan; otherwise it's already at the switching bay area 
+            { // only move the head if it's the last extruder plan; otherwise it's already at the switching bay area
                 // or do it anyway when we switch extruder in-place
                 gcode.setZ(gcode.getPositionZ() + MM2INT(3.0));
                 gcode.writeTravel(gcode.getPositionXY(), configs_storage.travel_config_per_extruder[extruder_nr].getSpeed());
@@ -1694,7 +1694,7 @@ void LayerPlan::writeGCode(GCodeExport& gcode)
 
         extruder_plan.handleAllRemainingInserts(gcode);
     } // extruder plans /\  .
-    
+
     gcode.updateTotalPrintTime();
 }
 
@@ -1712,40 +1712,40 @@ bool LayerPlan::makeRetractSwitchRetract(unsigned int extruder_plan_idx, unsigne
     std::vector<GCodePath>& paths = extruder_plans[extruder_plan_idx].paths;
     for (unsigned int path_idx2 = path_idx + 1; path_idx2 < paths.size(); path_idx2++)
     {
-        if (paths[path_idx2].getExtrusionMM3perMM() > 0) 
+        if (paths[path_idx2].getExtrusionMM3perMM() > 0)
         {
-            return false; 
+            return false;
         }
     }
-    
+
     if (extruder_plans.size() <= extruder_plan_idx+1)
     {
         return false; // TODO: check first extruder of the next layer! (generally only on the last layer of the second extruder)
     }
-        
+
     if (extruder_plans[extruder_plan_idx + 1].extruder_nr != extruder_plans[extruder_plan_idx].extruder_nr)
     {
         return true;
     }
-    else 
+    else
     {
         return false;
     }
 }
-    
+
 bool LayerPlan::writePathWithCoasting(GCodeExport& gcode, const size_t extruder_plan_idx, const size_t path_idx, const coord_t layer_thickness)
 {
     ExtruderPlan& extruder_plan = extruder_plans[extruder_plan_idx];
     const ExtruderTrain& extruder = Application::getInstance().current_slice->scene.extruders[extruder_plan.extruder_nr];
     const double coasting_volume = extruder.settings.get<double>("coasting_volume");
     if (coasting_volume <= 0)
-    { 
-        return false; 
+    {
+        return false;
     }
     const std::vector<GCodePath>& paths = extruder_plan.paths;
     const GCodePath& path = paths[path_idx];
     if (path_idx + 1 >= paths.size()
-        || (path.isTravelPath() || !paths[path_idx + 1].config->isTravelPath()) 
+        || (path.isTravelPath() || !paths[path_idx + 1].config->isTravelPath())
         || path.points.size() < 2)
     {
         return false;
@@ -1753,9 +1753,9 @@ bool LayerPlan::writePathWithCoasting(GCodeExport& gcode, const size_t extruder_
 
     coord_t coasting_min_dist_considered = 100; // hardcoded setting for when to not perform coasting
 
-    
+
     double extrude_speed = path.config->getSpeed() * extruder_plan.getExtrudeSpeedFactor() * path.speed_factor; // travel speed
-    
+
     const coord_t coasting_dist = MM2INT(MM2_2INT(coasting_volume) / layer_thickness) / path.config->getLineWidth(); // closing brackets of MM2INT at weird places for precision issues
     const double coasting_min_volume = extruder.settings.get<double>("coasting_min_volume");
     const coord_t coasting_min_dist = MM2INT(MM2_2INT(coasting_min_volume + coasting_volume) / layer_thickness) / path.config->getLineWidth(); // closing brackets of MM2INT at weird places for precision issues
@@ -1780,21 +1780,21 @@ bool LayerPlan::writePathWithCoasting(GCodeExport& gcode, const size_t extruder_
         const coord_t distance = vSize(point - *last);
         accumulated_dist += distance;
         accumulated_dist_per_point.push_back(accumulated_dist);
-        
+
         if (acc_dist_idx_gt_coast_dist == NO_INDEX && accumulated_dist >= coasting_dist)
         {
             acc_dist_idx_gt_coast_dist = backward_point_idx; // the newly added point
         }
-        
+
         if (accumulated_dist >= coasting_min_dist)
         {
             length_is_less_than_min_dist = false;
             break;
         }
-        
+
         last = &point;
     }
-    
+
     if (accumulated_dist < coasting_min_dist_considered)
     {
         return false;

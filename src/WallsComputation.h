@@ -6,7 +6,7 @@
 
 #include "settings/types/LayerIndex.h"
 
-namespace cura 
+namespace cura
 {
 
 class SliceLayer;
@@ -29,12 +29,12 @@ public:
 
     /*!
      * Generates the insets / perimeters for all parts in a layer.
-     * 
-     * Note that the second inset gets offsetted by WallsComputation::line_width_0 instead of the first, 
+     *
+     * Note that the second inset gets offsetted by WallsComputation::line_width_0 instead of the first,
      * which leads to better results for a smaller WallsComputation::line_width_0 than WallsComputation::line_width_x and when printing the outer wall last.
      *
      * \param layer The layer for which to generate the insets.
-     */ 
+     */
     void generateInsets(SliceLayer* layer);
 
 private:

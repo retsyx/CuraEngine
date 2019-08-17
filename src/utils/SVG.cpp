@@ -52,7 +52,7 @@ SVG::SVG(const char* filename, AABB aabb, Point canvas_size, Color background)
         fprintf(out, "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
     }
     fprintf(out, "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" style=\"width:%llipx;height:%llipx\">\n", canvas_size.X, canvas_size.Y);
-    
+
     if(background != Color::NONE)
     {
         fprintf(out, "<rect width=\"100%%\" height=\"100%%\" fill=\"%s\"/>\n", toString(background).c_str());
@@ -75,12 +75,12 @@ double SVG::getScale() const
     return scale;
 }
 
-Point SVG::transform(const Point& p) 
+Point SVG::transform(const Point& p)
 {
     return Point((p.X - aabb.min.X) * scale, canvas_size.X - border.X - (p.Y - aabb.min.Y) * scale) + border;
 }
 
-FPoint3 SVG::transformF(const Point& p) 
+FPoint3 SVG::transformF(const Point& p)
 {
     return FPoint3((p.X - aabb.min.X) * scale + border.X, canvas_size.X - border.X + border.Y - (p.Y-aabb.min.Y) * scale, 0.0);
 }
@@ -90,7 +90,7 @@ void SVG::writeComment(std::string comment)
     fprintf(out, "<!-- %s -->\n", comment.c_str());
 }
 
-void SVG::writeAreas(const Polygons& polygons, Color color, Color outline_color, float stroke_width) 
+void SVG::writeAreas(const Polygons& polygons, Color color, Color outline_color, float stroke_width)
 {
     for (PolygonsPart& parts : polygons.splitIntoParts())
     {
@@ -125,7 +125,7 @@ void SVG::writePoint(const Point& p, bool write_coords, int size, Color color)
 {
     FPoint3 pf = transformF(p);
     fprintf(out, "<circle cx=\"%f\" cy=\"%f\" r=\"%d\" stroke=\"%s\" stroke-width=\"1\" fill=\"%s\" />\n",pf.x, pf.y, size, toString(color).c_str(), toString(color).c_str());
-    
+
     if (write_coords)
     {
         fprintf(out, "<text x=\"%f\" y=\"%f\" style=\"font-size: 10px;\" fill=\"black\">%lli,%lli</text>\n",pf.x, pf.y, p.X, p.Y);
@@ -154,7 +154,7 @@ void SVG::writeLines(std::vector<Point> polyline, Color color)
     {
         return;
     }
-    
+
     FPoint3 transformed = transformF(polyline[0]); //Element 0 must exist due to the check above.
     fprintf(out,"<path fill=\"none\" stroke=\"%s\" stroke-width=\"1\" d=\"M%f,%f",toString(color).c_str(), transformed.x, transformed.y); //Write the start of the path tag and the first endpoint.
     for(size_t point = 1;point < polyline.size();point++)
@@ -227,4 +227,4 @@ void SVG::writePolygon(ConstPolygonRef poly, Color color, float stroke_width)
     }
 }
 
-} // namespace cura 
+} // namespace cura

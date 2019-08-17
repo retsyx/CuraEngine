@@ -15,7 +15,7 @@
 namespace cura {
 
 /*! \brief Sparse grid which can locate spatially nearby elements efficiently.
- * 
+ *
  * \note This is an abstract template class which doesn't have any functions to insert elements.
  * \see SparsePointGrid
  *
@@ -154,7 +154,7 @@ protected:
      * \param[in] location The grid location.
      * \return The print space coordinates that correspond to \p location.
      */
-    Point toLowerCorner(const GridPoint& location) const; 
+    Point toLowerCorner(const GridPoint& location) const;
 
     /*! \brief Compute the lowest coord in a grid cell.
      * The lowest point is the point in the grid cell closest to the origin.
@@ -162,7 +162,7 @@ protected:
      * \param[in] grid_coord The grid coordinate.
      * \return The print space coordinate that corresponds to \p grid_coord.
      */
-    coord_t toLowerCoord(const grid_coord_t& grid_coord) const; 
+    coord_t toLowerCoord(const grid_coord_t& grid_coord) const;
 
     /*! \brief Map from grid locations (GridPoint) to elements (Elem). */
     GridMap m_grid;

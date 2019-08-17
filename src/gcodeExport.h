@@ -131,9 +131,9 @@ private:
 
     /*!
      * The z position to be used on the next xy move, if the head wasn't in the correct z position yet.
-     * 
+     *
      * \see GCodeExport::writeExtrusion(Point, double, double)
-     * 
+     *
      * \note After GCodeExport::writeExtrusion(Point, double, double) has been called currentPosition.z coincides with this value
      */
     coord_t current_layer_z;
@@ -146,7 +146,7 @@ private:
 
     std::vector<Duration> total_print_times; //!< The total estimated print time in seconds for each feature
     TimeEstimateCalculator estimateCalculator;
-    
+
     bool is_volumetric;
     bool relative_extrusion; //!< whether to use relative extrusion distances rather than absolute
 
@@ -157,10 +157,10 @@ private:
 protected:
     /*!
      * Convert an E value to a value in mm (if it wasn't already in mm) for the current extruder.
-     * 
+     *
      * E values are either in mm or in mm^3
      * The current extruder is used to determine the filament area to make the conversion.
-     * 
+     *
      * \param e the value to convert
      * \return the value converted to mm
      */
@@ -168,10 +168,10 @@ protected:
 
     /*!
      * Convert a volume value to an E value (which might be volumetric as well) for the current extruder.
-     * 
+     *
      * E values are either in mm or in mm^3
      * The current extruder is used to determine the filament area to make the conversion.
-     * 
+     *
      * \param mm3 the value to convert
      * \return the value converted to mm or mm3 depending on whether the E axis is volumetric
      */
@@ -179,10 +179,10 @@ protected:
 
     /*!
      * Convert a distance value to an E value (which might be linear/distance based as well) for the current extruder.
-     * 
+     *
      * E values are either in mm or in mm^3
      * The current extruder is used to determine the filament area to make the conversion.
-     * 
+     *
      * \param mm the value to convert
      * \return the value converted to mm or mm3 depending on whether the E axis is volumetric
      */
@@ -201,7 +201,7 @@ protected:
     double eToMm3(double e, size_t extruder);
 
 public:
-    
+
     GCodeExport();
     ~GCodeExport();
 
@@ -215,7 +215,7 @@ public:
 
     /*!
      * Get the gcode file header (e.g. ";FLAVOR:UltiGCode\n")
-     * 
+     *
      * \param extruder_is_used For each extruder whether it is used in the print
      * \param print_time The total print time in seconds of the whole gcode (if known)
      * \param filament_used The total mm^3 filament used for each extruder or a vector of the wrong size of unknown
@@ -231,17 +231,17 @@ public:
     bool getExtruderIsUsed(const int extruder_nr) const; //!< return whether the extruder has been used throughout printing all meshgroup up till now
 
     Point getGcodePos(const coord_t x, const coord_t y, const int extruder_train) const;
-    
+
     void setFlavor(EGCodeFlavor flavor);
     EGCodeFlavor getFlavor() const;
-    
+
     void setZ(int z);
 
     void setFlowRateExtrusionSettings(double max_extrusion_offset, double extrusion_offset_factor);
 
-    void addLastCoastedVolume(double last_coasted_volume) 
+    void addLastCoastedVolume(double last_coasted_volume)
     {
-        extruder_attr[current_extruder].prime_volume += last_coasted_volume; 
+        extruder_attr[current_extruder].prime_volume += last_coasted_volume;
     }
 
     /*!
@@ -253,24 +253,24 @@ public:
     {
         extruder_attr[current_extruder].prime_volume += extra_prime_volume;
     }
-    
+
     Point3 getPosition() const;
-    
+
     Point getPositionXY() const;
 
     int getPositionZ() const;
 
     int getExtruderNr() const;
-    
+
     void setFilamentDiameter(size_t extruder, const coord_t diameter);
-    
+
     double getCurrentExtrudedVolume() const;
 
     /*!
      * Get the total extruded volume for a specific extruder in mm^3
-     * 
+     *
      * Retractions and unretractions don't contribute to this.
-     * 
+     *
      * \param extruder_nr The extruder number for which to get the total netto extruded volume
      * \return total filament printed in mm^3
      */
@@ -278,19 +278,19 @@ public:
 
     /*!
      * Get the total estimated print time in seconds for each feature
-     * 
+     *
      * \return total print time in seconds for each feature
      */
     std::vector<Duration> getTotalPrintTimePerFeature();
     /*!
      * Get the total print time in seconds for the complete print
-     * 
+     *
      * \return total print time in seconds for the complete print
      */
     double getSumTotalPrintTimes();
     void updateTotalPrintTime();
     void resetTotalPrintTimeAndFilament();
-    
+
     void writeComment(const std::string& comment);
     void writeTypeComment(const PrintFeatureType& type);
 
@@ -303,7 +303,7 @@ public:
 
     /*!
      * Write a comment saying what (estimated) time has passed up to this point
-     * 
+     *
      * \param time The time passed up till this point
      */
     void writeTimeComment(const Duration time);
@@ -317,21 +317,21 @@ public:
      * Write a comment saying that the print has a certain number of layers.
      */
     void writeLayerCountComment(const size_t layer_count);
-    
+
     void writeLine(const char* line);
-    
+
     /*!
      * Reset the current_e_value to prevent too high E values.
-     * 
+     *
      * The current extruded volume is added to the current extruder_attr.
      */
     void resetExtrusionValue();
-    
+
     void writeDelay(const Duration& time_amount);
 
     /*!
      * Coordinates are build plate coordinates, which might be offsetted when extruder offsets are encoded in the gcode.
-     * 
+     *
      * \param p location to go to
      * \param speed movement speed
      */
@@ -339,7 +339,7 @@ public:
 
     /*!
      * Coordinates are build plate coordinates, which might be offsetted when extruder offsets are encoded in the gcode.
-     * 
+     *
      * \param p location to go to
      * \param speed movement speed
      * \param feature the feature that's currently printing
@@ -350,7 +350,7 @@ public:
     /*!
      * Go to a X/Y location with the z-hopped Z value
      * Coordinates are build plate coordinates, which might be offsetted when extruder offsets are encoded in the gcode.
-     * 
+     *
      * \param p location to go to
      * \param speed movement speed
      */
@@ -360,9 +360,9 @@ public:
      * Go to a X/Y location with the extrusion Z
      * Perform un-z-hop
      * Perform unretraction
-     * 
+     *
      * Coordinates are build plate coordinates, which might be offsetted when extruder offsets are encoded in the gcode.
-     * 
+     *
      * \param p location to go to
      * \param speed movement speed
      * \param feature the feature that's currently printing
@@ -372,7 +372,7 @@ public:
 private:
     /*!
      * Coordinates are build plate coordinates, which might be offsetted when extruder offsets are encoded in the gcode.
-     * 
+     *
      * \param x build plate x
      * \param y build plate y
      * \param z build plate z
@@ -385,7 +385,7 @@ private:
      * Perform unretract
      * Write extrusion move
      * Coordinates are build plate coordinates, which might be offsetted when extruder offsets are encoded in the gcode.
-     * 
+     *
      * \param x build plate x
      * \param y build plate y
      * \param z build plate z
@@ -398,9 +398,9 @@ private:
 
     /*!
      * Write the F, X, Y, Z and E value (if they are not different from the last)
-     * 
+     *
      * convenience function called from writeExtrusion and writeTravel
-     * 
+     *
      * This function also applies the gcode offset by calling \ref GCodeExport::getGcodePos
      * This function updates the \ref GCodeExport::total_bounding_box
      * It estimates the time in \ref GCodeExport::estimateCalculator for the correct feature
@@ -423,7 +423,7 @@ public:
      * Get ready for extrusion moves:
      * - unretract (G11 or G1 E.)
      * - prime blob (G1 E)
-     * 
+     *
      * It estimates the time in \ref GCodeExport::estimateCalculator
      * It updates \ref GCodeExport::current_e_value and \ref GCodeExport::currentSpeed
      */
@@ -432,9 +432,9 @@ public:
 
     /*!
      * Start a z hop with the given \p hop_height.
-     * 
+     *
      * \param hop_height The height to move above the current layer.
-     * \param speed The speed used for moving. 
+     * \param speed The speed used for moving.
      */
     void writeZhopStart(const coord_t hop_height, Velocity speed = 0);
 
@@ -446,23 +446,23 @@ public:
     void writeZhopEnd(Velocity speed = 0);
 
     /*!
-     * Start the new_extruder: 
+     * Start the new_extruder:
      * - set new extruder
      * - zero E value
      * - write extruder start gcode
-     * 
+     *
      * \param new_extruder The extruder to start with
      */
     void startExtruder(const size_t new_extruder);
 
     /*!
-     * Switch to the new_extruder: 
+     * Switch to the new_extruder:
      * - perform neccessary retractions
      * - fiddle with E-values
      * - write extruder end gcode
      * - set new extruder
      * - write extruder start gcode
-     * 
+     *
      * \param new_extruder The extruder to switch to
      * \param retraction_config_old_extruder The extruder switch retraction config of the old extruder, to perform the extruder switch retraction with.
      * \param perform_z_hop The amount by which the print head should be z hopped during extruder switch, or zero if it should not z hop.
@@ -470,10 +470,10 @@ public:
     void switchExtruder(size_t new_extruder, const RetractionConfig& retraction_config_old_extruder, coord_t perform_z_hop = 0);
 
     void writeCode(const char* str);
-    
+
     /*!
      * Write the gcode for priming the current extruder train so that it can be used.
-     * 
+     *
      * \param travel_speed The travel speed when priming involves a movement
      */
     void writePrimeTrain(const Velocity& travel_speed);
@@ -484,9 +484,9 @@ public:
      * \param extruder The current extruder
      */
     void setExtruderFanNumber(int extruder);
-    
+
     void writeFanCommand(double speed);
-    
+
     void writeTemperatureCommand(const size_t extruder, const Temperature& temperature, const bool wait = false);
     void writeBedTemperatureCommand(const Temperature& temperature, const bool wait = false);
     void writeBuildVolumeTemperatureCommand(const Temperature& temperature, const bool wait = false);
@@ -514,7 +514,7 @@ public:
     /*!
      * Handle the initial (bed/nozzle) temperatures before any gcode is processed.
      * These temperatures are set in the pre-print setup in the firmware.
-     * 
+     *
      * See FffGcodeWriter::processStartingCode
      * \param start_extruder_nr The extruder with which to start this print
      */
@@ -523,10 +523,10 @@ public:
     /*!
      * Override or set an initial nozzle temperature as written by GCodeExport::setInitialTemps
      * This is used primarily during better specification of temperatures in LayerPlanBuffer::insertPreheatCommand
-     * 
+     *
      * \warning This function must be called before any of the layers in the meshgroup are written to file!
      * That's because it sets the current temperature in the gcode!
-     * 
+     *
      * \param extruder_nr The extruder number for which to better specify the temp
      * \param temp The temp at which the nozzle should be at startup
      */
@@ -534,7 +534,7 @@ public:
 
     /*!
      * Finish the gcode: turn fans off, write end gcode and flush all gcode left in the buffer.
-     * 
+     *
      * \param endCode The end gcode to be appended at the very end.
      */
     void finalize(const char* endCode);

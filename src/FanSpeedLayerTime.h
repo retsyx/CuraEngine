@@ -8,10 +8,10 @@
 #include "settings/types/LayerIndex.h"
 #include "settings/types/Velocity.h"
 
-namespace cura 
+namespace cura
 {
 
-struct FanSpeedLayerTimeSettings 
+struct FanSpeedLayerTimeSettings
 {
 public:
     Duration cool_min_layer_time;

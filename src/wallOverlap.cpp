@@ -7,13 +7,13 @@
 #include "utils/AABB.h" // for debug output svg html
 #include "utils/SVG.h"
 
-namespace cura 
+namespace cura
 {
 
 WallOverlapComputation::WallOverlapComputation(Polygons& polygons, const coord_t line_width)
 : overlap_linker(polygons, line_width)
 , line_width(line_width)
-{ 
+{
 
 }
 
@@ -219,4 +219,4 @@ void WallOverlapComputation::setIsPassed(const ProximityPointLink& link_a, const
 }
 
 
-}//namespace cura 
+}//namespace cura

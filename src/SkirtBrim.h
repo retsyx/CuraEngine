@@ -6,7 +6,7 @@
 
 #include "utils/Coord_t.h"
 
-namespace cura 
+namespace cura
 {
 
 class Polygons;
@@ -17,10 +17,10 @@ class SkirtBrim
 public:
     /*!
      * Generate skirt or brim (depending on parameters).
-     * 
+     *
      * When \p distance > 0 and \p count == 1 a skirt is generated, which has
      * slightly different configuration. Otherwise, a brim is generated.
-     * 
+     *
      * \param storage Storage containing the parts at the first layer.
      * \param distance The distance of the first outset from the parts at the first
      * layer.
@@ -50,7 +50,7 @@ private:
 
     /*!
      * \brief Generate the skirt/brim lines around the model.
-     * 
+     *
      * \param start_distance The distance of the first outset from the parts at
      * the first line.
      * \param primary_line_count Number of offsets / brim lines of the primary

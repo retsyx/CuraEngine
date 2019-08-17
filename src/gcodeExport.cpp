@@ -99,7 +99,7 @@ void GCodeExport::preSetup(const size_t start_extruder)
     {
         new_line = "\r\n";
     }
-    else 
+    else
     {
         new_line = "\n";
     }
@@ -679,7 +679,7 @@ void GCodeExport::writeMoveBFB(const int x, const int y, const int z, const Velo
 
         //Increase the extrusion amount to calculate the amount of filament used.
         Point3 diff = Point3(x,y,z) - getPosition();
-        
+
         current_e_value += extrusion_per_mm * diff.vSizeMM();
     }
     else
@@ -693,7 +693,7 @@ void GCodeExport::writeMoveBFB(const int x, const int y, const int z, const Velo
     }
     *output_stream << "G1 X" << MMtoStream{gcode_pos.X} << " Y" << MMtoStream{gcode_pos.Y} << " Z" << MMtoStream{z};
     *output_stream << " F" << PrecisionedDouble{1, fspeed} << new_line;
-    
+
     currentPosition = Point3(x, y, z);
     estimateCalculator.plan(TimeEstimateCalculator::Position(INT2MM(currentPosition.x), INT2MM(currentPosition.y), INT2MM(currentPosition.z), eToMm(current_e_value)), speed, feature);
 }
@@ -812,7 +812,7 @@ void GCodeExport::writeFXYZE(const Velocity& speed, const int x, const int y, co
         *output_stream << " " << extruder_attr[current_extruder].extruderCharacter << PrecisionedDouble{5, output_e};
     }
     *output_stream << new_line;
-    
+
     currentPosition = Point3(x, y, z);
     current_e_value = e;
     estimateCalculator.plan(TimeEstimateCalculator::Position(INT2MM(x), INT2MM(y), INT2MM(z), eToMm(e)), speed, feature);
@@ -856,7 +856,7 @@ void GCodeExport::writeUnretractionAndPrime()
         estimateCalculator.plan(TimeEstimateCalculator::Position(INT2MM(currentPosition.x), INT2MM(currentPosition.y), INT2MM(currentPosition.z), eToMm(current_e_value)), currentSpeed, PrintFeatureType::NoneType);
     }
     extruder_attr[current_extruder].prime_volume = 0.0;
-    
+
     if (getCurrentExtrudedVolume() > 10000.0 && flavor != EGCodeFlavor::BFB && flavor != EGCodeFlavor::MAKERBOT) //According to https://github.com/Ultimaker/CuraEngine/issues/14 having more then 21m of extrusion causes inaccuracies. So reset it every 10m, just to be sure.
     {
         resetExtrusionValue();
@@ -894,7 +894,7 @@ void GCodeExport::writeRetraction(const RetractionConfig& config, bool force, bo
     { // handle retraction limitation
         double current_extruded_volume = getCurrentExtrudedVolume();
         std::deque<double>& extruded_volume_at_previous_n_retractions = extr_attr.extruded_volume_at_previous_n_retractions;
-        while (extruded_volume_at_previous_n_retractions.size() > config.retraction_count_max && !extruded_volume_at_previous_n_retractions.empty()) 
+        while (extruded_volume_at_previous_n_retractions.size() > config.retraction_count_max && !extruded_volume_at_previous_n_retractions.empty())
         {
             // extruder switch could have introduced data which falls outside the retraction window
             // also the retraction_count_max could have changed between the last retraction and this
@@ -905,12 +905,12 @@ void GCodeExport::writeRetraction(const RetractionConfig& config, bool force, bo
             return;
         }
         if (!force && extruded_volume_at_previous_n_retractions.size() == config.retraction_count_max
-            && current_extruded_volume < extruded_volume_at_previous_n_retractions.back() + config.retraction_extrusion_window * extr_attr.filament_area) 
+            && current_extruded_volume < extruded_volume_at_previous_n_retractions.back() + config.retraction_extrusion_window * extr_attr.filament_area)
         {
             return;
         }
         extruded_volume_at_previous_n_retractions.push_front(current_extruded_volume);
-        if (extruded_volume_at_previous_n_retractions.size() == config.retraction_count_max + 1) 
+        if (extruded_volume_at_previous_n_retractions.size() == config.retraction_count_max + 1)
         {
             extruded_volume_at_previous_n_retractions.pop_back();
         }
@@ -919,9 +919,9 @@ void GCodeExport::writeRetraction(const RetractionConfig& config, bool force, bo
     const Settings& extruder_settings = Application::getInstance().current_slice->scene.extruders[current_extruder].settings;
     if (extruder_settings.get<bool>("machine_firmware_retract"))
     {
-        if (extruder_switch && extr_attr.retraction_e_amount_current) 
+        if (extruder_switch && extr_attr.retraction_e_amount_current)
         {
-            return; 
+            return;
         }
         *output_stream << "G10";
         if (extruder_switch && flavor == EGCodeFlavor::REPETIER)
@@ -1099,7 +1099,7 @@ void GCodeExport::writePrimeTrain(const Velocity& travel_speed)
     if (flavor == EGCodeFlavor::GRIFFIN)
     {
         bool should_correct_z = false;
-        
+
         std::string command = "G280";
         if (!extruder_settings.get<bool>("prime_blob_enable"))
         {

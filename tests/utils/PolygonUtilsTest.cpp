@@ -120,7 +120,7 @@ TEST_F(MoveInsideTest, middleTest)
 TEST_F(MoveInsideTest, middleTestPenalty)
 {
     const Point close_to(50, 50);
-    const Point supposed(80, 50); 
+    const Point supposed(80, 50);
     const Point preferred_dir(120, 60);
     constexpr coord_t distance = 20;
     const ClosestPolygonPoint cpp = PolygonUtils::findClosest(close_to, test_square, [preferred_dir](Point candidate) { return vSize2(candidate - preferred_dir); } );
@@ -168,7 +168,7 @@ TEST_F(MoveInsideTest, pointyCornerFail)
     Point result(from);
     Polygons inside;
     inside.add(pointy_square);
-    
+
     ClosestPolygonPoint cpp = PolygonUtils::moveInside2(inside, result, 10);
     ASSERT_NE(cpp.point_idx, NO_INDEX) << "Couldn't ensure point inside close to " << from << ".";
     ASSERT_NE(cpp.poly_idx, NO_INDEX) << "Couldn't ensure point inside close to " << from << ".";

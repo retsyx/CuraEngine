@@ -9,7 +9,7 @@
 #include "settings/types/Ratio.h"
 #include "utils/logoutput.h"
 
-namespace cura 
+namespace cura
 {
 
 Duration Preheat::getTimeToGoFromTempToTemp(const size_t extruder, const Temperature& temp_before, const Temperature& temp_after, const bool during_printing)
@@ -104,7 +104,7 @@ Preheat::WarmUpResult Preheat::getWarmUpPointAfterCoolDown(double time_window, u
         result.heating_time += time_to_heat_from_standby_to_print_temp;
         result.lowest_temperature = temp_mid;
     }
-    else 
+    else
     {
         result.heating_time += limited_time_window * time_to_heatup_1_degree / (time_to_cooldown_1_degree + time_to_heatup_1_degree);
         result.lowest_temperature = std::max(temp_mid, temp_end - result.heating_time / time_to_heatup_1_degree);
@@ -176,7 +176,7 @@ Preheat::CoolDownResult Preheat::getCoolDownPointAfterWarmUp(double time_window,
         result.cooling_time += cool_down_time;
         result.highest_temperature = temp_mid;
     }
-    else 
+    else
     {
         result.cooling_time += limited_time_window * time_to_heatup_1_degree / (time_to_cooldown_1_degree + time_to_heatup_1_degree);
         result.highest_temperature = std::min(temp_mid, temp_end + result.cooling_time / time_to_cooldown_1_degree);

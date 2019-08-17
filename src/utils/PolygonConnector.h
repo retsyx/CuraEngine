@@ -13,7 +13,7 @@
 #include "polygon.h"
 #include "polygonUtils.h"
 
-namespace cura 
+namespace cura
 {
 
 /*!
@@ -26,9 +26,9 @@ namespace cura
  *     o-----+ . +-----o                                   .
  *    /                 \                                  .
  *   /                   \                                 .
- * 
+ *
  *  This way two polygons become one.
- * 
+ *
  * By repeating such a procedure many polygons can be connected into a single continuous line.
  */
 class PolygonConnector
@@ -63,7 +63,7 @@ public:
 
     /*!
      * Connect as many polygons together as possible and return the resulting polygons.
-     * 
+     *
      * Algorithm outline:
      * try to connect a polygon to any of the other polygons
      * - if succeeded, add to pool of polygons to connect
@@ -103,7 +103,7 @@ protected:
      *        a ^     ^ b      --> connection a is always the left one
      *          ^     ^   --> direction of the two connections themselves.
      *     -----o-----o----
-     * 
+     *
      * The resulting polygon will travel along the edges in a direction different from each other.
      */
     struct PolygonBridge
@@ -124,14 +124,14 @@ protected:
 
     /*!
      * Add the segment from a polygon which is not removed by the bridge.
-     * 
+     *
      * This function gets called twice in order to connect two polygons together.
-     * 
+     *
      * Algorithm outline:
      * Add the one vertex from the \p start,
      * then add all vertices from the polygon in between
      * and then add the polygon location from the \p end.
-     * 
+     *
      * \param[out] result Where to apend the new vertices to
      */
     void addPolygonSegment(const ClosestPolygonPoint& start, const ClosestPolygonPoint& end, PolygonRef result);
@@ -139,13 +139,13 @@ protected:
     /*!
      * Get the direction between the polygon locations \p from and \p to.
      * This is intended to be the direction of the polygon segment of the short way around the polygon, not the long way around.
-     * 
+     *
      * The direction is positive for going in the same direction as the vertices are stored.
      * E.g. if \p from is vertex 7 and \p to is vertex 8 then the direction is positive.
      * Otherwise it is negative.
-     * 
+     *
      * \note \p from and \p to can also be points on the same segment, so their vertex index isn't everything to the algorithm.
-     * 
+     *
      * \note This function relies on some assumptions about the geometry of polygons you can encounter.
      * It cannot be used as a general purpose function for any two ClosestPolygonPoint
      * For large distances between \p from and \p to the output direction might be 'incorrect'.
@@ -154,15 +154,15 @@ protected:
 
     /*!
      * Get the bridge to cross between two polygons.
-     * 
+     *
      * If no bridge is possible, or if no bridge is found for any reason, then no object is returned.
-     * 
+     *
      * Algorithm outline:
      * - find the closest first connection between a \p poly and all (other) \p polygons
      * - find the best second connection parallel to that one at a line_width away
-     * 
+     *
      * if no second connection is found:
-     * - find the second connection at half a line width away and 
+     * - find the second connection at half a line width away and
      * - the first connection at a whole line distance away
      * So as to try and find a bridge which is centered around the initiall found first connection
      */
@@ -170,11 +170,11 @@ protected:
 
     /*!
      * Get a connection parallel to a given \p first connection at an orthogonal distance line_width from the \p first connection.
-     * 
+     *
      * From a given \p first connection,
      * walk along both polygons in each direction
      * until we are at a distance of line_width away orthogonally from the line segment of the \p first connection.
-     * 
+     *
      * For all combinations of such found points:
      * - check whether they are both on the same side of the \p first connection
      * - choose the connection which woukd form the smalles bridge

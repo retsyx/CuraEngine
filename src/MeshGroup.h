@@ -14,7 +14,7 @@ class FMatrix3x3;
 
 /*!
  * A MeshGroup is a collection with 1 or more 3D meshes.
- * 
+ *
  * One MeshGroup is a whole which is printed at once.
  * Generally there is one single MeshGroup, though when using one-at-a-time printing, multiple MeshGroups are processed consecutively.
  */
@@ -34,7 +34,7 @@ public:
 
 /*!
  * Load a Mesh from file and store it in the \p meshgroup.
- * 
+ *
  * \param meshgroup The meshgroup where to store the mesh
  * \param filename The filename of the mesh file
  * \param transformation The transformation applied to all vertices

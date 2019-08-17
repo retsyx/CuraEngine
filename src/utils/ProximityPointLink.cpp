@@ -1,7 +1,7 @@
 /** Copyright (C) 2016 Ultimaker - Released under terms of the AGPLv3 License */
 #include "ProximityPointLink.h"
 
-namespace cura 
+namespace cura
 {
 
 ProximityPointLink::ProximityPointLink(const ListPolyIt a, const ListPolyIt b, int dist, const ProximityPointLinkType type)
@@ -23,4 +23,4 @@ void ProximityPointLink::setDist(coord_t distance) const
     thiss.dist = distance;
 }
 
-}//namespace cura 
+}//namespace cura

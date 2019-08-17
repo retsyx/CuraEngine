@@ -6,7 +6,7 @@
 
 #include "settings/types/Velocity.h"
 
-namespace cura 
+namespace cura
 {
 
 /*!

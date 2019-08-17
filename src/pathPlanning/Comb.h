@@ -13,7 +13,7 @@
 #include "../utils/polygonUtils.h"
 #include "../utils/LazyInitialization.h"
 
-namespace cura 
+namespace cura
 {
 
 class CombPath;
@@ -48,7 +48,7 @@ class Comb
 private:
     /*!
      * A crossing from the inside boundary to the outside boundary.
-     * 
+     *
      * 'dest' is either the startPoint or the endpoint of a whole combing move.
      */
     class Crossing
@@ -64,7 +64,7 @@ private:
 
         /*!
          * Simple constructor
-         * 
+         *
          * \param dest_point Either the eventual startPoint or the eventual endPoint of this combing move.
          * \param dest_is_inside Whether the startPoint or endPoint is inside the inside boundary.
          * \param dest_part_idx The index into Comb:partsView_inside of the part in which the \p dest_point is.
@@ -75,15 +75,15 @@ private:
 
         /*!
          * Find the not-outside location (Combing::in_or_mid) of the crossing between to the outside boundary
-         * 
-         * \param partsView_inside Structured indices onto Comb::boundary_inside which shows which polygons belong to which part. 
+         *
+         * \param partsView_inside Structured indices onto Comb::boundary_inside which shows which polygons belong to which part.
          * \param close_to[in] Try to get a crossing close to this point
          */
         void findCrossingInOrMid(const PartsView& partsView_inside, const Point close_to);
 
         /*!
          * Find the outside location (Combing::out)
-         * 
+         *
          * \param outside The outside boundary polygons.
          * \param close_to A point to get closer to when there are multiple
          * candidates on the outside boundary which are almost equally close to
@@ -101,9 +101,9 @@ private:
 
         /*!
          * Find the best crossing from some inside polygon to the outside boundary.
-         * 
+         *
          * The detour from \p estimated_start to \p estimated_end is minimized.
-         * 
+         *
          * \param outside The outside boundary polygons
          * \param from From which inside boundary the crossing to the outside starts or ends
          * \param estimated_start The one point to which to stay close when evaluating crossings which cross about the same distance
@@ -161,10 +161,10 @@ private:
 public:
     /*!
      * Initialises the combing areas for every mesh in the layer (not support).
-     * 
+     *
      * \warning \ref Comb::calc changes the order of polygons in
      * \p Comb::comb_boundary_inside
-     * 
+     *
      * \param storage Where the layer polygon data is stored.
      * \param layer_nr The number of the layer for which to generate the combing
      * areas.
@@ -187,7 +187,7 @@ public:
     /*!
      * \brief Calculate the comb paths (if any), one for each polygon combed
      * alternated with travel paths.
-     * 
+     *
      * \warning Changes the order of polygons in \ref Comb::comb_boundary_inside
      * \param train The extruder train to calculate the comb path for.
      * \param startPoint Where to start moving from.

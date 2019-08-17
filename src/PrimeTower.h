@@ -9,7 +9,7 @@
 #include "utils/polygon.h" // Polygons
 #include "utils/polygonUtils.h"
 
-namespace cura 
+namespace cura
 {
 
 class SliceDataStorage;
@@ -66,7 +66,7 @@ public:
 
     /*!
      * Generate the prime tower area to be used on each layer
-     * 
+     *
      * Fills \ref PrimeTower::inner_poly and sets \ref PrimeTower::middle
      */
     void generateGroundpoly();
@@ -78,7 +78,7 @@ public:
 
     /*!
      * Add path plans for the prime tower to the \p gcode_layer
-     * 
+     *
      * \param storage where to get settings from; where to get the maximum height of the prime tower from
      * \param[in,out] gcode_layer Where to get the current extruder from; where to store the generated layer paths
      * \param prev_extruder The previous extruder with which paths were planned; from which extruder a switch was made
@@ -98,7 +98,7 @@ private:
 
     /*!
      * \see WipeTower::generatePaths
-     * 
+     *
      * Generate the extrude paths for each extruder on even and odd layers
      * Fill the ground poly with dense infill.
      */

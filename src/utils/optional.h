@@ -14,10 +14,10 @@ namespace std
 
 /*!
  * optional value
- * 
+ *
  * Adaptation of std::experimental::optional
  * See http://en.cppreference.com/w/cpp/utility/optional
- * 
+ *
  * This implementation *does* allocate on the heap and is therefore not completely according to spec.
  */
 template<typename T>
@@ -67,7 +67,7 @@ public:
     }
     /*!
      * Assign none to this optional value.
-     * 
+     *
      * \param null_ptr exactly [nullptr]
      * \return this
      */
@@ -146,7 +146,7 @@ public:
     {
         return *instance;
     }
-    template<class U> 
+    template<class U>
     constexpr T value_or(U&& default_value) const&
     {
         return instance ? *instance : default_value;

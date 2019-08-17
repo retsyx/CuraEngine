@@ -5,9 +5,9 @@
 #include "Application.h" //To send the layer data through the communication channel.
 #include "communication/Communication.h" //To send the layer data through the communication channel.
 
-namespace cura 
+namespace cura
 {
 
 FffProcessor FffProcessor::instance; // definition must be in cpp
 
-} // namespace cura 
+} // namespace cura

@@ -16,7 +16,7 @@ namespace cura
 class ExtruderPlan;
 class GCodePath;
 
-class MergeInfillLines 
+class MergeInfillLines
 {
 #ifdef BUILD_TESTS
     FRIEND_TEST(MergeInfillLinesTest, CalcPathLengthEmpty);

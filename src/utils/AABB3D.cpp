@@ -9,13 +9,13 @@
 namespace cura
 {
 
-AABB3D::AABB3D() 
+AABB3D::AABB3D()
 : min(std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max())
 , max(std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::min())
 {
 }
 
-AABB3D::AABB3D(Point3 min, Point3 max) 
+AABB3D::AABB3D(Point3 min, Point3 max)
 : min(min)
 , max(max)
 {
@@ -53,7 +53,7 @@ void AABB3D::include(Point3 p)
     min.z = std::min(min.z, p.z);
     max.x = std::max(max.x, p.x);
     max.y = std::max(max.y, p.y);
-    max.z = std::max(max.z, p.z);   
+    max.z = std::max(max.z, p.z);
 }
 
 void AABB3D::include(const AABB3D& aabb)

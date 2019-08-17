@@ -10,19 +10,19 @@
 
 #include "TimeMaterialEstimates.h"
 
-namespace cura 
+namespace cura
 {
 
 class GCodePathConfig;
 
 /*!
  * A class for representing a planned path.
- * 
+ *
  * A path consists of several segments of the same type of movement: retracted travel, infill extrusion, etc.
- * 
+ *
  * This is a compact premature representation in which are line segments have the same config, i.e. the config of this path.
- * 
- * In the final representation (gcode) each line segment may have different properties, 
+ *
+ * In the final representation (gcode) each line segment may have different properties,
  * which are added when the generated GCodePaths are processed.
  */
 class GCodePath
@@ -33,7 +33,7 @@ public:
     SpaceFillType space_fill_type; //!< The type of space filling of which this path is a part
     Ratio flow; //!< A type-independent flow configuration (used for wall overlap compensation)
     Ratio speed_factor; //!< A speed factor that is multiplied with the travel speed. This factor can be used to change the travel speed.
-    bool retract; //!< Whether the path is a move path preceded by a retraction move; whether the path is a retracted move path. 
+    bool retract; //!< Whether the path is a move path preceded by a retraction move; whether the path is a retracted move path.
     bool perform_z_hop; //!< Whether to perform a z_hop in this path, which is assumed to be a travel path.
     bool perform_prime; //!< Whether this path is preceded by a prime (blob)
     bool skip_agressive_merge_hint; //!< Wheter this path needs to skip merging if any travel paths are in between the extrusions.
@@ -62,16 +62,16 @@ public:
 
     /*!
      * Whether this config is the config of a travel path.
-     * 
+     *
      * \return Whether this config is the config of a travel path.
      */
     bool isTravelPath() const;
 
     /*!
      * Get the material flow in mm^3 per mm traversed.
-     * 
+     *
      * \warning Can only be called after the layer height has been set (which is done while writing the gcode!)
-     * 
+     *
      * \return The flow
      */
     double getExtrusionMM3perMM() const;

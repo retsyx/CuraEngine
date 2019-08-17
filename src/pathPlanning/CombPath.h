@@ -6,7 +6,7 @@
 
 #include "../utils/IntPoint.h"
 
-namespace cura 
+namespace cura
 {
 
 struct CombPath : public  std::vector<Point> //!< A single path either inside or outise the parts

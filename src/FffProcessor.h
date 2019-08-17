@@ -27,9 +27,9 @@ public:
      * Get the instance
      * \return The instance
      */
-    static FffProcessor* getInstance() 
+    static FffProcessor* getInstance()
     {
-        return &instance; 
+        return &instance;
     }
 
 public:
@@ -50,9 +50,9 @@ public:
 
     /*!
      * Set the target to write gcode to: to a file.
-     * 
+     *
      * Used when CuraEngine is used as command line tool.
-     * 
+     *
      * \param filename The filename of the file to which to write the gcode.
      */
     bool setTargetFile(const char* filename)
@@ -62,9 +62,9 @@ public:
 
     /*!
      * Set the target to write gcode to: an output stream.
-     * 
+     *
      * Used when CuraEngine is NOT used as command line tool.
-     * 
+     *
      * \param stream The stream to write gcode to.
      */
     void setTargetStream(std::ostream* stream)
@@ -74,9 +74,9 @@ public:
 
     /*!
      * Get the total extruded volume for a specific extruder in mm^3
-     * 
+     *
      * Retractions and unretractions don't contribute to this.
-     * 
+     *
      * \param extruder_nr The extruder number for which to get the total netto extruded volume
      * \return total filament printed in mm^3
      */
@@ -87,7 +87,7 @@ public:
 
     /*!
      * Get the total estimated print time in seconds for each feature
-     * 
+     *
      * \return total print time in seconds for each feature
      */
     std::vector<Duration> getTotalPrintTimePerFeature()
